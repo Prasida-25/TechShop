@@ -1,0 +1,37 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1><%= advertisement ? 'Sửa quảng cáo' : 'Thêm quảng cáo' %></h1>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <form method="post" enctype="multipart/form-data" class="admin-form" action="<%= advertisement ? `/admin/advertisements/${advertisement.advertisement_id}/update` : '/admin/advertisements' %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="admin-field"><label for="title">Tiêu đề / mô tả ảnh</label>
+      <input id="title" name="title" maxlength="200" required value="<%= typeof values.title === 'string' ? values.title : '' %>" aria-describedby="title-error" />
+      <p class="admin-error" id="title-error" role="alert"><%= errors.title || '' %></p>
+    </div>
+    <div class="admin-field"><label for="position">Vị trí</label>
+      <select id="position" name="position" required aria-describedby="position-error">
+        <option value="hero" <%= values.position === 'hero' ? 'selected' : '' %>>Banner lớn</option>
+        <option value="promotion" <%= values.position === 'promotion' ? 'selected' : '' %>>Ô quảng cáo nhỏ</option>
+      </select><p class="admin-error" id="position-error" role="alert"><%= errors.position || '' %></p>
+    </div>
+    <div class="admin-field"><label for="target_url">Liên kết nội bộ (không bắt buộc)</label>
+      <input id="target_url" name="target_url" maxlength="500" value="<%= typeof values.target_url === 'string' ? values.target_url : '' %>" placeholder="/products/1" aria-describedby="target-url-error" />
+      <p class="admin-error" id="target-url-error" role="alert"><%= errors.target_url || '' %></p>
+    </div>
+    <div class="admin-field"><label for="sort_order">Thứ tự (số nhỏ trước)</label>
+      <input id="sort_order" name="sort_order" type="number" min="0" max="2147483647" step="1" required value="<%= typeof values.sort_order === 'string' || typeof values.sort_order === 'number' ? values.sort_order : '' %>" aria-describedby="sort-order-error" />
+      <p class="admin-error" id="sort-order-error" role="alert"><%= errors.sort_order || '' %></p>
+    </div>
+    <div class="admin-field"><label class="advertisement-toggle"><input type="checkbox" name="is_active" value="1" <%= String(values.is_active) === '1' ? 'checked' : '' %> /> Bật hiển thị</label>
+      <p class="admin-error" role="alert"><%= errors.is_active || '' %></p>
+    </div>
+    <% if (advertisement) { %><p>Ảnh hiện tại (để trống ô chọn ảnh để giữ nguyên):</p><img src="/admin/advertisements/<%= advertisement.advertisement_id %>/image" alt="<%= advertisement.title %>" width="300" style="max-width:100%;height:auto" /><% } %>
+    <div class="admin-field"><label for="image">Ảnh quảng cáo — tối đa 1 MB</label>
+      <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/bmp" <%= advertisement ? '' : 'required' %> aria-describedby="image-error" />
+      <p>JPEG, PNG, WebP, GIF, AVIF hoặc BMP. Nên dùng ảnh ngang, cùng tỷ lệ với vị trí trên trang chủ. Khi lưu lỗi, vui lòng chọn lại file ảnh.</p>
+      <p class="admin-error" id="image-error" role="alert"><%= errors.image || '' %></p>
+    </div>
+    <div class="admin-actions"><button class="btn btn--primary" type="submit">Lưu quảng cáo</button><a href="/admin/advertisements">Về danh sách</a></div>
+  </form>
+</section>
+<%- include('../partials/end') %>

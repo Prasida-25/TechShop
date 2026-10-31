@@ -1,0 +1,36 @@
+<%- include('../account/partials/start') %>
+<link rel="stylesheet" href="/css/orders.css" />
+<section class="orders-page">
+  <h1>Chi tiết đơn #<%= order.order_id %></h1>
+  <p>Ngày đặt: <%= order.created_at_label %></p>
+  <p>Trạng thái: <strong><%= order.statusLabel %></strong></p>
+  <p><%= order.methodLabel %> — <%= order.paymentLabel %></p>
+  <% if (order.canPayBank) { %><p><a class="btn btn--primary" href="/orders/<%= order.order_id %>/payment">Thanh toán</a></p><% } %>
+  <section class="orders-card"><h2>Thông tin nhận hàng lúc đặt</h2>
+    <p><%= order.receiver_name %> — <%= order.phone %></p>
+    <p><%= [order.address_detail, order.ward, order.district, order.province].filter(Boolean).join(', ') %></p>
+  </section>
+  <h2>Sản phẩm đã mua</h2>
+  <% if (!order.items.length) { %><p>Chưa có dữ liệu chi tiết sản phẩm.</p><% } %>
+  <% for (const item of order.items) { %>
+    <article class="orders-card">
+      <h3><%= item.product_name %></h3>
+      <% if (item.variant_name) { %><p>Phiên bản: <%= item.variant_name %></p><% } %>
+      <% if (item.sku) { %><p>Mã phiên bản: <%= item.sku %></p><% } %>
+      <p>Số lượng: <%= item.quantity %></p><p>Đơn giá lúc mua: <%= item.priceLabel %></p>
+      <p>Thành tiền: <strong><%= item.lineLabel %></strong></p>
+      <% if (order.status === 'delivered' && item.order_item_id) { %>
+        <a class="btn" href="/orders/<%= order.order_id %>/items/<%= item.order_item_id %>/review">Đánh giá / Xem đánh giá của bạn</a>
+      <% } %>
+    </article>
+  <% } %>
+  <section class="orders-card">
+    <% if (order.warning) { %><p class="account-notice" role="status"><%= order.warning %></p><% } %>
+    <p>Tiền hàng: <strong><%= order.subtotalLabel %></strong></p>
+    <% if (order.discountLabel !== null) { %><p>Giảm giá<% if (order.coupon_code) { %> (<%= order.coupon_code %>)<% } %>: −<%= order.discountLabel %></p><% } %>
+    <p>Phí giao hàng: <strong><%= order.shippingLabel %></strong></p>
+    <p>Tổng thanh toán: <strong><%= order.totalLabel %></strong></p>
+  </section>
+  <a class="btn" href="/orders">Quay lại lịch sử đơn hàng</a>
+</section>
+<%- include('../account/partials/end') %>

@@ -1,0 +1,9 @@
+<% for (const [name, label, max, type] of fields) { %>
+  <div class="admin-field">
+    <label for="<%= name %>"><%= label %></label>
+    <input id="<%= name %>" name="<%= name %>" type="<%= type %>" value="<%= values[name] ?? '' %>"
+      <% if (type === 'number') { %>min="<%= name === 'price' ? '0.01' : '0' %>" max="<%= name === 'price' ? '9999999999.99' : '2147483647' %>" step="<%= name === 'price' ? '0.01' : '1' %>"<% } else { %>maxlength="<%= max %>"<% } %>
+      required <% if (errors[name]) { %>aria-invalid="true" aria-describedby="<%= name %>-error"<% } %> />
+    <% if (errors[name]) { %><p class="admin-error" id="<%= name %>-error"><%= errors[name] %></p><% } %>
+  </div>
+<% } %>

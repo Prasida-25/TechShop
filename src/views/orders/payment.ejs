@@ -1,0 +1,10 @@
+<%- include('../account/partials/start') %>
+<link rel="stylesheet" href="/css/orders.css" />
+<section class="orders-page">
+  <h1>Thanh toán đơn #<%= order.order_id %></h1>
+  <p>Trạng thái thanh toán: <strong><%= order.paymentLabel %></strong></p>
+  <div class="orders-card">
+    <%- include('../checkout/bank-details', { details: order.bankDetails, reference: 'TZ' + order.order_id, totalLabel: order.totalLabel }) %>
+  </div>
+</section>
+<%- include('../account/partials/end') %>

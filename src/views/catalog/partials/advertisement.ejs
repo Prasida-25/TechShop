@@ -1,0 +1,5 @@
+<% if (advertisement.target_url && validTarget(advertisement.target_url)) { %>
+  <a href="<%= advertisement.target_url %>" class="<%= linkClass %>"><img src="/advertisements/<%= advertisement.advertisement_id %>/image" class="<%= imageClass %>" alt="<%= advertisement.title %>" /></a>
+<% } else { %>
+  <div class="<%= linkClass %>"><img src="/advertisements/<%= advertisement.advertisement_id %>/image" class="<%= imageClass %>" alt="<%= advertisement.title %>" /></div>
+<% } %>

@@ -1,0 +1,76 @@
+const express = require('express');
+const { requireAuth } = require('../middleware/account-auth');
+const { requireAdmin } = require('../middleware/admin-auth');
+const controller = require('../controllers/admin-controller');
+const { createAdminProductRepository } = require('../repositories/admin-product-repository');
+const { createAdminProductService } = require('../services/admin-product-service');
+const { createAdminProductController } = require('../controllers/admin-product-controller');
+const { createAdminOrderRepository } = require('../repositories/admin-order-repository');
+const { createAdminOrderService } = require('../services/admin-order-service');
+const { createAdminOrderController } = require('../controllers/admin-order-controller');
+const { createAdminCategoryRepository } = require('../repositories/admin-category-repository');
+const { createAdminCategoryService } = require('../services/admin-category-service');
+const { createAdminCategoryController } = require('../controllers/admin-category-controller');
+const { createCouponRepository } = require('../repositories/coupon-repository');
+const { createCouponService } = require('../services/coupon-service');
+const { createAdminCouponController } = require('../controllers/admin-coupon-controller');
+const { createAdvertisementRepository } = require('../repositories/advertisement-repository');
+const { createAdvertisementService } = require('../services/advertisement-service');
+const { createAdvertisementController } = require('../controllers/advertisement-controller');
+
+function createAdminRouter(productRepository = createAdminProductRepository(), orderRepository = createAdminOrderRepository(), categoryRepository = createAdminCategoryRepository(), couponRepository = createCouponRepository(), advertisementRepository = createAdvertisementRepository()) {
+  const router = express.Router();
+  // Guard toàn bộ prefix, mọi phương thức, kể cả các URL chưa được triển khai.
+  // requireAuth dùng baseUrl để quay lại /admin sau khi đăng nhập.
+  router.use('/admin', requireAuth, requireAdmin);
+  router.get('/admin', controller.overview);
+  const advertisements = createAdvertisementController(createAdvertisementService(advertisementRepository), advertisementRepository);
+  router.get('/admin/advertisements', advertisements.list);
+  router.get('/admin/advertisements/new', advertisements.form);
+  router.post('/admin/advertisements', advertisements.save);
+  router.get('/admin/advertisements/:advertisementId/edit', advertisements.form);
+  router.get('/admin/advertisements/:advertisementId/image', advertisements.adminImage);
+  router.post('/admin/advertisements/:advertisementId/update', advertisements.save);
+  router.post('/admin/advertisements/:advertisementId/status', advertisements.status);
+  router.post('/admin/advertisements/:advertisementId/delete', advertisements.remove);
+  const coupons=createAdminCouponController(createCouponService(couponRepository));
+  router.get('/admin/coupons',coupons.list);
+  router.get('/admin/coupons/new',coupons.form);
+  router.post('/admin/coupons',coupons.save);
+  router.get('/admin/coupons/:couponId/edit',coupons.form);
+  router.post('/admin/coupons/:couponId/update',coupons.save);
+  router.post('/admin/coupons/:couponId/status',coupons.status);
+  router.get('/admin/coupons/:couponId/orders',coupons.orders);
+  const categories = createAdminCategoryController(createAdminCategoryService(categoryRepository));
+  router.get('/admin/categories', categories.list);
+  router.get('/admin/categories/new', categories.form);
+  router.post('/admin/categories', categories.save);
+  router.get('/admin/categories/:categoryId/edit', categories.form);
+  router.post('/admin/categories/:categoryId/update', categories.save);
+  router.post('/admin/categories/:categoryId/delete', categories.remove);
+  const products = createAdminProductController(createAdminProductService(productRepository));
+  router.get('/admin/products', products.list);
+  router.get('/admin/products/new', products.newProduct);
+  router.post('/admin/products', products.saveProduct);
+  router.get('/admin/products/:productId/edit', products.editProduct);
+  router.post('/admin/products/:productId/update', products.saveProduct);
+  router.post('/admin/products/:productId/delete', products.removeProduct);
+  router.post('/admin/products/:productId/image/delete', products.removeImage);
+  router.post('/admin/products/:productId/images/:imageId/delete', products.removeImage);
+  router.post('/admin/products/:productId/variants/:variantId/image/delete', products.removeImage);
+  router.get('/admin/products/:productId/variants/new', products.newVariant);
+  router.post('/admin/products/:productId/variants', products.saveVariant);
+  router.get('/admin/products/:productId/variants/:variantId/edit', products.editVariant);
+  router.post('/admin/products/:productId/variants/:variantId/update', products.saveVariant);
+  const orders = createAdminOrderController(createAdminOrderService(orderRepository));
+  router.get('/admin/orders', orders.list);
+  router.get('/admin/orders/:orderId', orders.detail);
+  router.post('/admin/orders/:orderId/status', orders.change);
+  router.post('/admin/orders/:orderId/cancel', orders.cancel);
+  router.post('/admin/orders/:orderId/confirm-cod', orders.confirmCod);
+  router.post('/admin/orders/:orderId/confirm-bank', orders.confirmBank);
+  router.use('/admin', controller.notFound);
+  return router;
+}
+
+module.exports = { createAdminRouter };

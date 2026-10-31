@@ -1,0 +1,37 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <div class="admin-panel_header">
+    <h1>Danh mục sản phẩm</h1>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <p><a class="btn btn--primary" href="/admin/categories/new">Thêm danh mục</a></p>
+  </div>
+  <form action="/admin/categories" method="get" class="admin-search">
+    <label for="category-search">Tìm tên danh mục</label><input id="category-search" name="q" maxlength="100" value="<%= q %>" />
+    <button class="btn btn--primary" type="submit">Tìm kiếm</button>
+  </form>
+  <% if (!categories.length) { %><p role="status">Không có danh mục phù hợp.</p><% } else { %>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Danh mục</th><th>Mô tả</th><th>Số sản phẩm</th><th>Cập nhật</th><th>Xóa</th></tr></thead><tbody>
+      <% for (const category of categories) { %><tr>
+        <td><%= category.category_name %></td><td><%= category.description || '—' %></td><td><%= category.product_count %></td>
+        <td><a href="/admin/categories/<%= category.category_id %>/edit">Sửa</a></td>
+        <td>
+          <% if (Number(category.product_count) > 0) { %>
+            <button type="button" class="btn" disabled title="Danh mục đang có sản phẩm nên không thể xóa">Không thể xóa</button>
+          <% } else { %>
+            <form method="post" action="/admin/categories/<%= category.category_id %>/delete">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <label><input type="checkbox" name="confirm_delete" value="1" required aria-label="Xác nhận xóa danh mục <%= category.category_name %>" /> Xác nhận</label>
+              <button type="submit" class="btn btn--primary">Xóa</button>
+            </form>
+          <% } %>
+        </td>
+      </tr><% } %>
+    </tbody></table></div>
+    <nav class="admin-actions" aria-label="Phân trang danh mục">
+      <% if (page > 1) { %><a href="?<%= new URLSearchParams({q,page:String(page-1)}) %>">Trang trước</a><% } %>
+      <span>Trang <%= page %>/<%= pages %></span>
+      <% if (page < pages) { %><a href="?<%= new URLSearchParams({q,page:String(page+1)}) %>">Trang sau</a><% } %>
+    </nav>
+  <% } %>
+</section>
+<%- include('../partials/end') %>

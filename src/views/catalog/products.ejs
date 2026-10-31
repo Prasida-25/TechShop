@@ -1,0 +1,60 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/css/product-listing.css" />
+<main class="listing-page">
+  <aside class="listing-sidebar" aria-label="Bộ lọc sản phẩm">
+    <details class="listing-filters" open>
+      <summary><i class="fa-solid fa-sliders" aria-hidden="true"></i> Bộ lọc tìm kiếm</summary>
+      <nav class="listing-filter-section" aria-label="Danh mục sản phẩm">
+        <h2>Theo danh mục</h2>
+        <ul class="listing-categories">
+          <li><a class="<%= !filters.categoryId?'is-selected':'' %>" <%- !filters.categoryId?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{categoryId:null,page:1}) %>"><span class="listing-choice" aria-hidden="true"></span>Tất cả sản phẩm</a></li>
+          <% for(const category of categories){ const selected=filters.categoryId===Number(category.category_id); %>
+            <li><a class="<%= selected?'is-selected':'' %>" <%- selected?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{categoryId:category.category_id,page:1}) %>"><span class="listing-choice" aria-hidden="true"></span><%= category.category_name %></a></li>
+          <% } %>
+        </ul>
+        <% if(!categories.length){ %><p class="listing-muted">Chưa có danh mục.</p><% } %>
+      </nav>
+      <section class="listing-filter-section">
+        <h2>Khoảng giá</h2>
+        <form action="<%= filters.q?'/products/search':'/products' %>" method="get" class="listing-price-form">
+          <% if(filters.q){ %><input type="hidden" name="q" value="<%= filters.q %>" /><% } %>
+          <% if(filters.categoryId){ %><input type="hidden" name="category_id" value="<%= filters.categoryId %>" /><% } %>
+          <input type="hidden" name="sort" value="<%= filters.sort %>" /><input type="hidden" name="limit" value="<%= filters.limit %>" />
+          <label for="listing-min">Giá từ (đ)</label><input id="listing-min" type="number" name="min_price" min="0" max="9999999999.99" step="0.01" placeholder="Tối thiểu" value="<%= filters.minPrice ?? '' %>" />
+          <label for="listing-max">Đến (đ)</label><input id="listing-max" type="number" name="max_price" min="0" max="9999999999.99" step="0.01" placeholder="Tối đa" value="<%= filters.maxPrice ?? '' %>" />
+          <button class="listing-button listing-button--primary" type="submit">Áp dụng</button>
+        </form>
+      </section>
+      <a class="listing-reset" href="<%= catalogUrl(filters,{categoryId:null,minPrice:null,maxPrice:null,sort:'newest',page:1}) %>">Bỏ bộ lọc</a>
+    </details>
+  </aside>
+  <section class="listing-results" aria-labelledby="listing-title">
+    <header class="listing-heading"><h1 id="listing-title"><% if(filters.q){ %>Kết quả tìm kiếm cho <span>“<%= filters.q %>”</span><% } else { %>Tất cả sản phẩm<% } %></h1></header>
+    <div class="listing-sortbar">
+      <span class="listing-sort-label">Sắp xếp theo</span>
+      <a class="listing-button <%= filters.sort==='newest'?'listing-button--primary':'' %>" <%- filters.sort==='newest'?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{sort:'newest',page:1}) %>">Mới nhất</a>
+      <a class="listing-button <%= filters.sort==='bestselling'?'listing-button--primary':'' %>" <%- filters.sort==='bestselling'?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{sort:'bestselling',page:1}) %>">Bán chạy</a>
+      <details class="listing-price-menu">
+        <summary class="listing-button <%= ['price_asc','price_desc'].includes(filters.sort)?'listing-price-menu--active':'' %>"><%= filters.sort==='price_asc'?'Giá: Thấp đến cao':filters.sort==='price_desc'?'Giá: Cao đến thấp':'Giá' %><span aria-hidden="true">⌄</span></summary>
+        <div class="listing-price-menu__options">
+          <a <%- filters.sort==='price_asc'?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{sort:'price_asc',page:1}) %>">Giá: Thấp đến cao</a>
+          <a <%- filters.sort==='price_desc'?'aria-current="true"':'' %> href="<%= catalogUrl(filters,{sort:'price_desc',page:1}) %>">Giá: Cao đến thấp</a>
+        </div>
+      </details>
+      <% if(totalPages>0){ %><nav class="listing-quick-pages" aria-label="Chuyển trang nhanh"><span><strong><%= page %></strong>/<%= totalPages %></span>
+        <% if(page>1){ %><a class="listing-page-arrow" href="<%= catalogUrl(filters,{page:page-1}) %>" aria-label="Trang trước">‹</a><% } else { %><span class="listing-page-arrow is-disabled" aria-hidden="true">‹</span><% } %>
+        <% if(page<totalPages){ %><a class="listing-page-arrow" href="<%= catalogUrl(filters,{page:page+1}) %>" aria-label="Trang sau">›</a><% } else { %><span class="listing-page-arrow is-disabled" aria-hidden="true">›</span><% } %>
+      </nav><% } %>
+    </div>
+    <% if(filters.categoryId || filters.minPrice!==null || filters.maxPrice!==null){ %><div class="listing-active-filters" aria-label="Bộ lọc đang áp dụng">
+      <% if(filters.categoryId){ const c=categories.find(c=>Number(c.category_id)===filters.categoryId); %><a href="<%= catalogUrl(filters,{categoryId:null,page:1}) %>"><%= c.category_name %> <span aria-hidden="true">×</span><span class="listing-sr-only"> — Bỏ danh mục</span></a><% } %>
+      <% if(filters.minPrice!==null || filters.maxPrice!==null){ %><a href="<%= catalogUrl(filters,{minPrice:null,maxPrice:null,page:1}) %>">Giá: <%= formatMoney(filters.minPrice ?? 0) %> – <%= filters.maxPrice===null?'Không giới hạn':formatMoney(filters.maxPrice) %> <span aria-hidden="true">×</span><span class="listing-sr-only"> — Bỏ khoảng giá</span></a><% } %>
+    </div><% } %>
+    <% if(products.length){ %><div class="listing-product-grid">
+      <% for(const product of products){ %><%- include('partials/product-card',{product}) %><% } %>
+    </div><% } else { %><div class="listing-empty" role="status"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><h2>Không tìm thấy sản phẩm phù hợp.</h2><p>Thử thay đổi từ khóa hoặc bỏ bớt bộ lọc.</p><a class="listing-button listing-button--primary" href="/products">Xem tất cả sản phẩm</a></div><% } %>
+    <%- include('partials/pagination') %>
+  </section>
+</main>
+<script src="/js/product-listing.js" defer></script>
+<%- include('partials/end') %>

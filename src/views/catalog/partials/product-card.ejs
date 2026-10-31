@@ -1,0 +1,21 @@
+<div class="grid__column-5">
+  <a class="home-product-item catalog-card tz-product-card" href="/products/<%= product.product_id %>">
+    <div class="home-product-item__banner">
+      <img class="home-product-item__img" src="/products/<%= product.product_id %>/image" alt="<%= product.product_name %>" loading="lazy" width="200" height="200" />
+    </div>
+    <div class="tz-product-card__body">
+    <h4 class="home-product-item__name"><%= product.product_name %></h4>
+    <div class="home-product-item__price">
+      <span class="home-product-item__price-new"><%= formatMoney(product.min_price) %></span>
+    </div>
+    <% if(!Number(product.variant_count) || Number(product.total_stock)<=0){ %><p class="tz-product-card__status"><%= !Number(product.variant_count)?'Chưa có biến thể hợp lệ':'Hết hàng' %></p><% } %>
+    <div class="tz-product-card__metrics">
+      <% const rating=Number(product.average_rating), reviews=Number(product.review_count);
+         if(reviews>0 && Number.isFinite(rating) && rating>=1 && rating<=5){ %>
+        <span class="tz-product-card__rating" aria-label="<%= rating.toFixed(1) %> trên 5 sao, <%= reviews %> đánh giá"><span aria-hidden="true">★</span> <%= rating.toFixed(1) %></span>
+      <% } else { %><span class="tz-product-card__unrated">Chưa có đánh giá</span><% } %>
+      <span class="tz-product-card__sold"><%= Number(product.sold_count) || 0 %> đã bán</span>
+    </div>
+    </div>
+  </a>
+</div>

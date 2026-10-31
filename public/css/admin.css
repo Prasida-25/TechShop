@@ -1,0 +1,227 @@
+/* Chỉ tải trong layout quản trị; dùng font, màu và button của base.css. */
+.admin-form .advertisement-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-form .advertisement-toggle input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+.admin-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-delete-dialog {
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: var(--text-color);
+  font: inherit;
+}
+.admin-delete-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+a {
+  text-decoration: none;
+}
+.manage_variants--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-page {
+  margin: 0;
+  background: #f5f5f5;
+  color: var(--text-color);
+  font-size: 1.6rem;
+}
+.admin-page a {
+  color: inherit;
+}
+.admin-page .btn {
+  height: auto;
+  min-height: 40px;
+  padding: 10px 16px;
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px max(var(--page-gutter), calc((100% - var(--content-width)) / 2));
+  background: var(--white-color);
+  border-bottom: 1px solid #ddd;
+}
+.admin-brand {
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.admin-brand span {
+  margin-left: 10px;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.admin-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.admin-nav a {
+  text-decoration: none;
+}
+.admin-nav a:hover {
+  color: var(--hover-color);
+}
+.admin-nav form {
+  margin: 0;
+}
+.admin-content {
+  width: min(var(--content-width), calc(100% - var(--page-gutter) * 2));
+  margin: 28px auto;
+}
+.admin-panel {
+  padding: 28px;
+  background: var(--white-color);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+
+.admin-panel_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-panel h1 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+.admin-panel h2 {
+  font-size: 2rem;
+}
+.admin-panel p {
+  margin: 12px 0;
+  line-height: 1.7;
+}
+.admin-panel ul {
+  padding-left: 24px;
+  line-height: 1.8;
+}
+.admin-notice {
+  padding: 12px;
+  border-left: 3px solid var(--primary-color);
+  background: #f5f5f5;
+}
+.admin-actions,
+.admin-search {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.admin-actions {
+  justify-content: center;
+}
+
+.admin-form {
+  max-width: 760px;
+}
+.admin-field {
+  margin: 18px 0;
+}
+.admin-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.admin-field input,
+.admin-field select,
+.admin-field textarea,
+.admin-search input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #888;
+  border-radius: 3px;
+  color: var(--text-color);
+  background: var(--white-color);
+  font: inherit;
+}
+.admin-search input {
+  width: min(100%, 380px);
+}
+.admin-error {
+  color: #b42318;
+}
+.admin-preview {
+  display: block;
+  max-width: 180px;
+  max-height: 160px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+.admin-table-wrap {
+  overflow-x: auto;
+}
+.admin-table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+.admin-table th {
+  background: #f5f5f5;
+}
+.admin-footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.4rem;
+}
+.admin-skip {
+  position: absolute;
+  left: -10000px;
+}
+.admin-skip:focus {
+  left: 12px;
+  top: 12px;
+  padding: 12px;
+  background: var(--white-color);
+  z-index: 1;
+}
+.admin-page a:focus-visible,
+.admin-page button:focus-visible {
+  outline: 2px solid var(--hover-color);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px var(--page-gutter);
+  }
+  .admin-nav {
+    gap: 16px;
+  }
+  .admin-content {
+    margin: 16px auto;
+  }
+  .admin-panel {
+    padding: 20px 16px;
+  }
+}

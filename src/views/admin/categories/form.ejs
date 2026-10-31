@@ -1,0 +1,30 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1><%= category ? 'Sửa danh mục' : 'Thêm danh mục' %></h1>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <form method="post" class="admin-form" action="<%= category ? `/admin/categories/${category.category_id}/update` : '/admin/categories' %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="admin-field"><label for="category_name">Tên danh mục</label>
+      <input id="category_name" name="category_name" maxlength="100" required value="<%= typeof values.category_name === 'string' ? values.category_name : '' %>" aria-describedby="category-name-error" />
+      <p class="admin-error" id="category-name-error" role="alert"><%= errors.category_name || '' %></p>
+    </div>
+    <div class="admin-field"><label for="description">Mô tả (không bắt buộc)</label>
+      <textarea id="description" name="description" rows="5" maxlength="4000" aria-describedby="category-description-error"><%= typeof values.description === 'string' ? values.description : '' %></textarea>
+      <p class="admin-error" id="category-description-error" role="alert"><%= errors.description || '' %></p>
+    </div>
+    <div class="admin-actions"><button type="submit" class="btn btn--primary">Lưu danh mục</button><a href="/admin/categories">Về danh sách</a></div>
+  </form>
+  <% if (category) { %>
+    <h2>Xóa danh mục</h2>
+    <% if (Number(category.product_count) > 0) { %>
+      <p class="admin-notice" role="status">Không thể xóa: danh mục đang có <%= category.product_count %> sản phẩm. Hãy chuyển toàn bộ sản phẩm sang danh mục khác trước.</p>
+    <% } else { %>
+      <form method="post" action="/admin/categories/<%= category.category_id %>/delete" class="admin-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <label><input type="checkbox" name="confirm_delete" value="1" required /> Tôi xác nhận xóa danh mục này. Thao tác không xóa sản phẩm hoặc đơn hàng.</label>
+        <div class="admin-actions"><button type="submit" class="btn btn--primary">Xóa danh mục</button></div>
+      </form>
+    <% } %>
+  <% } %>
+</section>
+<%- include('../partials/end') %>

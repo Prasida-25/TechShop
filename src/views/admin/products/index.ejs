@@ -1,0 +1,32 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <div class="admin-panel_header">
+    <h1>Sản phẩm</h1>
+    <div class="admin-actions"><a class="btn btn--primary" href="/admin/products/new">Thêm sản phẩm</a></div>
+  </div>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  
+  <form action="/admin/products" method="get" class="admin-search">
+    <label for="q">Tìm tên hoặc thương hiệu</label>
+    <input id="q" name="q" value="<%= q %>" maxlength="200" />
+    <button class="btn btn--primary" type="submit">Tìm kiếm</button>
+  </form>
+  <% if (!products.length) { %><p role="status">Không có sản phẩm phù hợp.</p><% } else { %>
+    <div class="admin-table-wrap"><table class="admin-table">
+      <thead><tr><th>Mã</th><th>Sản phẩm</th><th>Thương hiệu</th><th>Danh mục</th><th>Biến thể</th><th>Thao tác</th><th>Xóa sản phẩm</th></tr></thead>
+      <tbody><% for (const p of products) { %><tr>
+        <td><%= p.product_id %></td><td><%= p.product_name %></td><td><%= p.brand || '—' %></td>
+        <td><%= p.category_name || 'Chưa phân loại' %></td><td><%= p.variant_count %></td>
+        <td><a href="/admin/products/<%= p.product_id %>/edit">Sửa / Xem biến thể</a></td>
+        <td><%- include('delete', {product:p}) %></td>
+      </tr><% } %></tbody>
+    </table></div>
+    <nav class="admin-actions" aria-label="Phân trang sản phẩm">
+      <% if (page > 1) { %><a href="/admin/products?<%= new URLSearchParams({q, page: String(page-1)}) %>">Trang trước</a><% } %>
+      <span>Trang <%= page %> / <%= pages %></span>
+      <% if (page < pages) { %><a href="/admin/products?<%= new URLSearchParams({q, page: String(page+1)}) %>">Trang sau</a><% } %>
+    </nav>
+  <% } %>
+</section>
+<%- include('delete-dialog') %>
+<%- include('../partials/end') %>

@@ -1,0 +1,14 @@
+<nav class="category" aria-label="Danh mục sản phẩm">
+  <h3 class="category-heading"><i class="category-heading-icon fas fa-list" aria-hidden="true"></i> Danh mục</h3>
+  <ul class="category-list">
+    <li class="category-item <%= !filters.categoryId ? 'category-item--active' : '' %>">
+      <a class="category-item__link" href="<%= catalogUrl(filters, {categoryId: null, page: 1}) %>">Tất cả sản phẩm</a>
+    </li>
+    <% for (const category of categories) { %>
+      <li class="category-item <%= filters.categoryId === Number(category.category_id) ? 'category-item--active' : '' %>">
+        <a class="category-item__link" href="<%= catalogUrl(filters, {categoryId: category.category_id, page: 1}) %>"><%= category.category_name %></a>
+      </li>
+    <% } %>
+  </ul>
+  <% if (!categories.length) { %><p class="catalog-note">Chưa có danh mục.</p><% } %>
+</nav>

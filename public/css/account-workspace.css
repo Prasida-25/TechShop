@@ -1,0 +1,78 @@
+/* Bố cục tài khoản theo mẫu, màu Action Blue của DESIGN.md; không áp dụng form đăng nhập. */
+.account-page:has(.account-layout) { background: #f5f5f7; min-height: 70vh; }
+.account-page .account-layout { display: grid; grid-template-columns: 205px minmax(0,1fr); gap: 28px; margin: 0; padding: 12px 0 32px; align-items: start; }
+.account-layout > .account-sidebar, .account-layout > .account-main { width: 100%; min-width: 0; padding: 0; }
+.account-identity { display: flex; align-items: center; gap: 12px; padding: 18px 0 24px; border-bottom: 1px solid #e0e0e0; }
+.account-initial { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #e8eef7; color: #0066cc; font-size: 1.8rem; }
+.account-identity strong { display: block; font-size: 1.5rem; font-weight: 600; overflow-wrap: anywhere; }
+.account-identity a { display: block; color: #7a7a7a; font-size: 1.3rem; margin-top: 4px; }
+.account-layout .account_option { gap: 16px; padding-top: 24px; }
+.account-nav-heading { font-size: 1.5rem; margin: 0; display: flex; gap: 12px; align-items: center; }
+.account-nav-heading i, .account-nav-orders i { color: #0066cc; font-size: 1.8rem; }
+.account-layout .account_option--name { font-size: 1.4rem; font-weight: 400; line-height: 1.6; }
+.account-nav-child { margin-left: 30px; }
+.account-nav-orders { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.account-page .account_option a[aria-current="page"], .account-page .account_option a:hover { color: #0066cc; }
+.account-layout .profile, .account-layout .account-addresses { min-height: 460px; padding: 28px 30px; border-radius: 3px; box-shadow: none; border: 1px solid #e0e0e0; background: #fff; }
+.account-panel-header { padding-bottom: 22px; border-bottom: 1px solid #f0f0f0; margin-bottom: 30px; }
+.account-panel-header .profile_heading, .account-panel-header .adress_heading { font-size: 2.1rem; font-weight: 500; line-height: 1.5; padding: 0; margin: 0; border: 0; }
+.account-panel-header > p { margin: 6px 0 0; color: #7a7a7a; font-size: 1.3rem; }
+.account-layout .profile_form { max-width: 680px; padding: 10px 0 0; }
+.account-layout .profile__row { margin: 0 0 24px; gap: 0; }
+.account-layout .profile__label { flex: 0 0 155px; font-size: 1.4rem; color: #7a7a7a; padding-right: 24px; }
+.account-layout .profile__field { min-width: 0; }
+.account-layout .profile__input { height: 42px; border-radius: 2px; padding: 10px 12px; font: inherit; font-size: 1.4rem; }
+.account-layout .profile__input:focus { border-color: #0066cc; outline: 2px solid #0066cc22; }
+.account-layout .account-error:empty { display: none; }
+.account-layout .profile__save, .account-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: auto; min-width: 110px; min-height: 42px; padding: 10px 22px; margin: 0; border: 1px solid #0066cc; border-radius: 3px; background: #0066cc; color: #fff; font: inherit; font-size: 1.4rem; font-weight: 500; text-decoration: none; cursor: pointer; }
+.account-layout .profile__save:hover, .account-primary:hover { background: #0071e3; }
+.account-layout .profile__save { height: auto; }
+.account-form-submit { margin: 28px 0 0 155px; }
+.account-layout .profile__hint { margin: -8px 0 22px 155px; color: #7a7a7a; font-size: 1.2rem; line-height: 1.6; }
+.account-layout .account-notice { margin-bottom: 22px; border-color: #0066cc; }
+.account-address-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 0; }
+.account-page .account-layout .adress_number { display: flex; justify-content: space-between; gap: 24px; padding: 24px 0; margin: 0; border-bottom: 1px solid #f0f0f0; }
+.account-layout .adress_number--item { min-width: 0; }
+.account-layout .adress_number--item.last { display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; gap: 14px; flex: none; }
+.account-address-person { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 1.5rem; }
+.account-address-person strong { font-weight: 500; }
+.account-address-person span { border-left: 1px solid #ddd; padding-left: 10px; color: #7a7a7a; }
+.account-layout .adress_number .account-note { margin: 8px 0; color: #7a7a7a; line-height: 1.7; overflow-wrap: anywhere; }
+.account-layout .account-default { padding: 1px 7px; border-color: #0066cc; color: #0066cc; font-size: 1.2rem; }
+.account-address-links { display: flex; align-items: center; gap: 14px; }
+.account-address-links form { margin: 0; }
+.account-layout .adress_update, .account-text-button { color: #0066cc; font: inherit; font-size: 1.3rem; border: 0; background: none; padding: 0; cursor: pointer; text-decoration: none; }
+.account-layout .adress_default { font-size: 1.2rem; background: #fff; border: 1px solid #ddd; padding: 7px 10px; color: #333; margin: 0; cursor: pointer; }
+.account-address-dialog { position: static; margin: 24px 0 0; width: 100%; border: 0; color: #1d1d1f; padding: 0; background: #fff; }
+.account-address-dialog:modal { position: fixed; inset: 0; margin: auto; width: 580px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 40px); overflow-y: auto; padding: 28px; border: 1px solid #e0e0e0; border-radius: 5px; }
+.account-address-dialog::backdrop { background: #0006; }
+.account-address-dialog h2 { font-size: 2.1rem; font-weight: 500; margin: 0 0 26px; }
+.account-address-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.account-page .account-address-dialog .profile__row { display: block; margin: 0; }
+.account-address-fields .profile__row:last-child { grid-column: 1 / -1; }
+.account-page .account-address-dialog .profile__label { display: block; padding: 0; margin: 0 0 7px; text-align: left; color: #555; font-size: 1.3rem; }
+.account-default-choice { display: flex; align-items: center; gap: 8px; font-size: 1.3rem; margin-top: 22px; }
+.account-default-choice input { width: 16px; height: 16px; accent-color: #0066cc; }
+.account-address-dialog .account-actions { justify-content: flex-end; gap: 24px; margin-top: 30px; }
+.account-address-dialog .account-actions a { color: #7a7a7a; text-decoration: none; }
+.account-layout a:focus-visible, .account-layout button:focus-visible { outline: 2px solid #0066cc; outline-offset: 3px; }
+@media(max-width: 900px) { .account-page .account-layout { grid-template-columns: 180px minmax(0,1fr); gap: 20px; } .account-layout .profile, .account-layout .account-addresses { padding: 24px; } }
+@media(max-width: 760px) {
+  .account-page .account-layout { display: block; padding-top: 0; }
+  .account-sidebar { margin-bottom: 20px; }
+  .account-identity { padding: 10px 0 14px; }
+  .account-layout .account_option { flex-direction: row; flex-wrap: wrap; gap: 12px 20px; padding: 16px 0 0; }
+  .account-nav-heading { flex-basis: 100%; }
+  .account-nav-child, .account-nav-orders { margin: 0; }
+  .account-layout .profile, .account-layout .account-addresses { padding: 20px 16px; min-height: 360px; }
+  .account-panel-header { margin-bottom: 24px; }
+  .account-layout .profile__row { flex-direction: column; gap: 7px; }
+  .account-layout .profile__label { flex-basis: auto; text-align: left; padding: 0; }
+  .account-layout .profile__field { width: 100%; }
+  .account-form-submit, .account-layout .profile__hint { margin-left: 0; }
+  .account-address-header { flex-wrap: wrap; }
+  .account-page .account-layout .adress_number { flex-direction: column; gap: 16px; }
+  .account-layout .adress_number--item.last { align-items: flex-start; }
+  .account-address-dialog:modal { padding: 22px 18px; }
+  .account-address-fields { grid-template-columns: minmax(0,1fr); gap: 16px; }
+}

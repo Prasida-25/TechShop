@@ -1,0 +1,13 @@
+<%- include('partials/auth-start', {authMode: 'login'}) %>
+  <h1 id="auth-title" hidden>Đăng nhập</h1>
+  <% if (notice) { %><p class="account-notice" role="status"><%= notice %></p><% } %>
+  <% if (errors.general) { %><p class="account-error" role="alert"><%= errors.general %></p><% } %>
+  <form class="profile_form" method="post" action="/login" data-account-form="login">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <input type="hidden" name="returnTo" value="<%= returnTo %>" />
+    <%- include('partials/field', {field: 'phone', label: 'Số điện thoại', maximum: 30}) %>
+    <%- include('partials/field', {field: 'password', label: 'Mật khẩu', inputType: 'password', maximum: 128, loginForm: true}) %>
+    <button class="profile__save" type="submit">Đăng nhập</button>
+  </form>
+  <p class="auth-switch">Chưa có tài khoản? <a href="/register">Đăng ký ngay</a></p>
+<%- include('partials/auth-end') %>

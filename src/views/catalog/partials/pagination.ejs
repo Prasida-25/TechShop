@@ -1,0 +1,9 @@
+<% if (totalPages > 0) { %>
+<nav class="catalog-pagination" aria-label="Phân trang">
+  <% if (page > 1) { %><a class="btn" rel="prev" href="<%= catalogUrl(filters, {page: page - 1}) %>">Trang trước</a><% } %>
+  <% for (let number = Math.max(1, page - 2); number <= Math.min(totalPages, page + 2); number++) { %>
+    <a class="btn <%= number === page ? 'btn--primary' : '' %>" <%- number === page ? 'aria-current="page"' : '' %> href="<%= catalogUrl(filters, {page: number}) %>"><%= number %></a>
+  <% } %>
+  <% if (page < totalPages) { %><a class="btn" rel="next" href="<%= catalogUrl(filters, {page: page + 1}) %>">Trang sau</a><% } %>
+</nav>
+<% } %>

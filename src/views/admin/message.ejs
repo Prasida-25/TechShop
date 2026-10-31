@@ -1,0 +1,11 @@
+<%- include('partials/start') %>
+<section class="admin-panel" role="alert">
+  <h1>Lỗi <%= status %></h1>
+  <p><%= message %></p>
+  <% if (currentUser && currentUser.role === 'admin') { %>
+    <a class="btn btn--primary" href="/admin">Về trang quản trị</a>
+  <% } else { %>
+    <a class="btn btn--primary" href="/account">Về tài khoản</a>
+  <% } %>
+</section>
+<%- include('partials/end') %>

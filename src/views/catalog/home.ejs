@@ -1,0 +1,40 @@
+<%- include('partials/head') %>
+<div class="container">
+  <div class="grid">
+    <div class="grid__row app__content">
+      <div class="grid__column-2"><%- include('partials/categories') %></div>
+      <div class="grid__column-8">
+        <% for (const advertisement of advertisements.hero) { %>
+          <%- include('partials/advertisement', { advertisement, imageClass: 'banner_home', linkClass: 'banner' }) %>
+        <% } %>
+      </div>
+      <div class="grid__column-2">
+        <div class="commitment">
+          <h1 class="commitment_heading">Cam kết</h1>
+          <span class="commitment_name">Hàng chính hãng</span>
+          <span class="commitment_name">Miễn phí vận chuyển đơn từ 300K</span>
+          <span class="commitment_name">Đổi trả 7 ngày</span>
+          <span class="commitment_name">Bảo hành chính hãng 12 tháng</span>
+        </div>
+      </div>
+    </div>
+    <% if (advertisements.promotion.length) { %>
+    <div class="grid__row">
+      <div class="propose"><div class="grid__row">
+        <% for (const advertisement of advertisements.promotion) { %>
+          <div class="grid__column-3"><%- include('partials/advertisement', { advertisement, imageClass: 'propose_img', linkClass: 'propose_link' }) %></div>
+        <% } %>
+      </div></div>
+    </div>
+    <% } %>
+    <section aria-labelledby="latest-heading">
+      <div class="suggest"><h1 class="suggest_heading" id="latest-heading">GỢI Ý HÔM NAY</h1></div>
+      <div class="products"><div class="grid__row">
+        <% for (const product of suggestions) { %><%- include('partials/product-card', {product}) %><% } %>
+      </div></div>
+      <% if (!suggestions.length) { %><p class="catalog-empty">Chưa có sản phẩm.</p><% } %>
+    </section>
+    <p class="catalog-more"><a class="btn btn--primary" href="/products">Xem tất cả sản phẩm</a></p>
+  </div>
+</div>
+<%- include('partials/end') %>

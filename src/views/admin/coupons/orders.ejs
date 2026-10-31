@@ -1,0 +1,5 @@
+<%- include('../partials/start') %>
+<section class="admin-panel"><h1>Đơn sử dụng mã <%= coupon.code %></h1><p>Bao gồm cả đơn đã hủy; tiền giảm là dữ liệu lưu lúc đặt hàng.</p>
+  <% if(!orders.length){ %><p>Chưa có đơn sử dụng mã này.</p><% } else { %><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Đơn</th><th>Ngày đặt</th><th>Mã lúc đặt</th><th>Tiền giảm</th><th>Tổng thanh toán</th><th>Trạng thái</th></tr></thead><tbody><% for(const o of orders){ %><tr><td><a href="/admin/orders/<%= o.order_id %>">#<%= o.order_id %></a></td><td><%= o.created_at_label %></td><td><%= o.coupon_code %></td><td><%= moneyLabel(o.discount_amount) %></td><td><%= moneyLabel(o.total_amount) %></td><td><%= o.status %></td></tr><% } %></tbody></table></div><% } %>
+  <% if(pages){ %><nav class="admin-actions"><% if(page>1){ %><a href="?page=<%= page-1 %>">Trang trước</a><% } %><span>Trang <%= page %>/<%= pages %></span><% if(page<pages){ %><a href="?page=<%= page+1 %>">Trang sau</a><% } %></nav><% } %><a href="/admin/coupons">Về danh sách mã</a>
+</section><%- include('../partials/end') %>

@@ -1,0 +1,19 @@
+<%- include('../catalog/partials/head') %>
+<link rel="stylesheet" href="/css/orders.css" />
+<div class="container"><section class="orders-page app__content">
+  <h1>Đánh giá: <%= product.product_name %></h1>
+  <p><%= total %> đánh giá. Chỉ khách có sản phẩm trong đơn đã giao được gửi đánh giá từ trang đơn mua.</p>
+  <% if (!reviews.length) { %><p class="catalog-empty" role="status">Chưa có đánh giá cho sản phẩm này.</p><% } %>
+  <% for (const review of reviews) { %>
+    <article class="orders-card"><h2>Khách đã mua hàng · <%= review.rating %>/5</h2>
+      <p><%= review.created_at_label %></p><p class="review-comment"><%= review.comment || 'Không có nội dung nhận xét.' %></p>
+    </article>
+  <% } %>
+  <% if (totalPages > 1) { %><nav class="catalog-pagination" aria-label="Phân trang đánh giá">
+    <% if (page > 1) { %><a class="btn" href="?page=<%= page-1 %>">Trang trước</a><% } %>
+    <span>Trang <%= page %>/<%= totalPages %></span>
+    <% if (page < totalPages) { %><a class="btn" href="?page=<%= page+1 %>">Trang sau</a><% } %>
+  </nav><% } %>
+  <p><a class="btn" href="/products/<%= product.product_id %>">Về sản phẩm</a></p>
+</section></div>
+<%- include('../catalog/partials/end') %>

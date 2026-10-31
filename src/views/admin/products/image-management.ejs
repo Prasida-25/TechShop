@@ -1,0 +1,36 @@
+<section aria-label="Quản lý ảnh đã lưu">
+  <h2>Ảnh đã lưu</h2>
+  <% const base = `/admin/products/${product.product_id}`;
+     const cover = managedVariant || product;
+     const label = managedVariant ? 'ảnh biến thể' : 'ảnh đại diện'; %>
+  <% if (Number(cover.has_image)) { %>
+    <div class="admin-field">
+      <img class="admin-preview" src="/products/<%= product.product_id %><%= managedVariant ? `/variants/${managedVariant.variant_id}` : '' %>/image" alt="<%= label %>" loading="lazy" />
+      <form method="post" action="<%= base %><%= managedVariant ? `/variants/${managedVariant.variant_id}` : '' %>/image/delete" data-confirm-image-delete data-image-label="<%= label %>">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><input type="hidden" name="confirm_delete" value="1" />
+        <button class="btn" type="submit">Xóa <%= label %></button>
+      </form>
+    </div>
+  <% } else { %><p>Chưa có <%= label %> riêng.</p><% } %>
+  <% if (!managedVariant) { %>
+    <% if (!product.images.length) { %><p>Chưa có ảnh bổ sung.</p><% } %>
+    <% for (const [index, image] of product.images.entries()) { %>
+      <div class="admin-field">
+        <img class="admin-preview" src="/products/<%= product.product_id %>/images/<%= image.image_id %>" alt="Ảnh bổ sung <%= index + 1 %>" loading="lazy" />
+        <form method="post" action="<%= base %>/images/<%= image.image_id %>/delete" data-confirm-image-delete data-image-label="ảnh bổ sung <%= index + 1 %>">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><input type="hidden" name="confirm_delete" value="1" />
+          <button class="btn" type="submit">Xóa ảnh bổ sung <%= index + 1 %></button>
+        </form>
+      </div>
+    <% } %>
+  <% } %>
+</section>
+<dialog class="admin-delete-dialog" data-image-delete-dialog aria-labelledby="image-delete-title">
+  <h2 id="image-delete-title">Xóa ảnh?</h2>
+  <p data-image-delete-message></p>
+  <form method="dialog" class="admin-actions">
+    <button class="btn" type="submit" value="cancel" autofocus>Hủy</button>
+    <button class="btn btn--primary" type="submit" value="delete">Xóa</button>
+  </form>
+</dialog>
+<script src="/js/admin-image-delete.js" defer></script>

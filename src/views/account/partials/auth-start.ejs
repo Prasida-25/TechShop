@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/reset.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-page">
+  <header class="auth-header"><div class="grid auth-header__inner">
+    <a href="/" class="auth-brand" aria-label="Trang chủ TechZone"><span class="auth-brand__symbol" aria-hidden="true"><img src="/images/techzone-logo.svg" alt="" width="150" height="40" /></span><span>TechZone</span></a>
+    <a href="/products" class="auth-store-link">Về cửa hàng <span aria-hidden="true">↗</span></a>
+  </div></header>
+  <main class="grid auth-shell">
+    <section class="auth-card" aria-labelledby="auth-title">
+      <nav class="auth-tabs" aria-label="Tài khoản">
+        <a href="/login" <%- authMode === 'login' ? 'aria-current="page"' : '' %>>Đăng nhập</a>
+        <a href="/register" <%- authMode === 'register' ? 'aria-current="page"' : '' %>>Đăng ký</a>
+      </nav>

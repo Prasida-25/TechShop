@@ -1,0 +1,43 @@
+<%- include('partials/start') %>
+<section class="adress account-addresses">
+  <header class="account-panel-header account-address-header"><h1 class="adress_heading">Địa chỉ của tôi</h1><a class="account-primary" href="/account/addresses?new=1#address-form" data-address-open><span aria-hidden="true">＋</span> Thêm địa chỉ</a></header>
+  <% if (!addresses.length) { %><p class="account-note">Bạn chưa có địa chỉ giao hàng.</p><% } %>
+  <% for (const address of addresses) { %>
+    <article class="adress_number">
+      <div class="adress_number--item">
+        <div class="account-address-person"><strong><%= address.receiver_name %></strong><span><%= address.phone %></span></div>
+        <p class="account-note"><%= address.address_detail %><br /><%= [address.ward, address.district, address.province].filter(Boolean).join(', ') %></p>
+        <% if (address.is_default) { %><span class="account-default">Mặc định</span><% } %>
+      </div>
+      <div class="adress_number--item last">
+        <div class="account-address-links"><a class="adress_update" href="/account/addresses?edit=<%= address.address_id %>#address-form">Cập nhật</a>
+        <form method="post" action="/account/addresses/<%= address.address_id %>/delete" data-confirm-delete>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><input type="hidden" name="confirm_delete" value="1" />
+          <button class="account-text-button" type="submit">Xóa</button>
+        </form></div>
+        <% if (!address.is_default) { %>
+          <form method="post" action="/account/addresses/<%= address.address_id %>/default">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><button class="adress_default" type="submit">Đặt làm mặc định</button>
+          </form>
+        <% } %>
+      </div>
+    </article>
+  <% } %>
+  <dialog open class="account-address-dialog" data-address-dialog data-auto-open="<%= editing || Object.keys(errors).length ? '1' : '0' %>" data-editing="<%= editing ? '1' : '0' %>" aria-labelledby="address-form">
+  <h2 id="address-form"><%= editing ? 'Cập nhật địa chỉ' : 'Địa chỉ mới' %></h2>
+  <form class="profile_form" method="post" action="<%= editing ? `/account/addresses/${editing.address_id}/update` : '/account/addresses' %>" data-account-form="address">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="account-address-fields">
+    <%- include('partials/field', {field: 'receiver_name', label: 'Họ và tên người nhận'}) %>
+    <%- include('partials/field', {field: 'phone', label: 'Số điện thoại người nhận', maximum: 30}) %>
+    <%- include('partials/field', {field: 'province', label: 'Tỉnh/Thành phố'}) %>
+    <%- include('partials/field', {field: 'ward', label: 'Phường/Xã'}) %>
+    <%- include('partials/field', {field: 'address_detail', label: 'Số nhà, đường', maximum: 255}) %>
+    </div>
+    <label class="account-default-choice"><input type="checkbox" name="is_default" value="1" <%= values.is_default ? 'checked' : '' %> /> Đặt làm địa chỉ mặc định</label>
+    <div class="account-actions"><a href="/account/addresses" data-address-close>Trở lại</a><button class="profile__save" type="submit">Lưu địa chỉ</button></div>
+  </form>
+  </dialog>
+</section>
+<script src="/js/account-address-dialog.js" defer></script>
+<%- include('partials/end') %>

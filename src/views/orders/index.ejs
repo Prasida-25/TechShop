@@ -1,0 +1,42 @@
+<%- include('../account/partials/start') %>
+<link rel="stylesheet" href="/css/orders.css" />
+<link rel="stylesheet" href="/css/order-history.css" />
+<section class="orders-page order-history">
+  <h1 class="order-history-title">Đơn mua của tôi</h1>
+  <nav class="purchase-tabs" aria-label="Lọc trạng thái đơn hàng">
+    <% for(const [status,label] of [['all','Tất cả'],['unpaid','Chờ thanh toán'],['pending','Chờ xác nhận'],['confirmed','Đã xác nhận'],['shipping','Đang giao'],['delivered','Hoàn thành'],['cancelled','Đã hủy']]) { %>
+      <a href="/orders?status=<%= status %>" <%- history.status===status?'aria-current="page"':'' %>><%= label %></a>
+    <% } %>
+  </nav>
+  <% if (!history.orders.length) { %>
+    <div class="purchase-empty"><i class="fa-regular fa-clipboard" aria-hidden="true"></i><h2><%= history.status==='all'?'Bạn chưa có đơn hàng nào.':'Chưa có đơn hàng ở trạng thái này.' %></h2><a class="btn" href="/products">Xem sản phẩm</a></div>
+  <% } else { %>
+    <% for (const order of history.orders) { %>
+      <article class="purchase-card">
+        <% const brands = [...new Set(order.items.map(item => typeof item.brand === 'string' ? item.brand.trim() : '').filter(Boolean))]; %>
+        <header class="purchase-card__header"><div><strong><%= brands.length ? brands.join(' · ') : 'Chưa có thương hiệu' %></strong><a href="/orders/<%= order.order_id %>">Đơn #<%= order.order_id %></a></div><span class="purchase-status"><%= order.statusLabel %></span></header>
+        <div class="purchase-items">
+          <% if(!order.items.length){ %><p>Chưa có dữ liệu chi tiết sản phẩm.</p><% } %>
+          <% for(const item of order.items){ %>
+            <a class="purchase-item" href="/orders/<%= order.order_id %>">
+              <img src="<%= item.product_id ? `/products/${item.product_id}${item.variant_id ? `/variants/${item.variant_id}` : ''}/image` : '/images/product-placeholder.svg' %>" alt="<%= item.product_name %>" width="82" height="82" loading="lazy" />
+              <div class="purchase-item__info"><h2><%= item.product_name %></h2><% if(item.variant_name){ %><p>Phân loại: <%= item.variant_name %></p><% } %><span>x<%= item.quantity %></span></div>
+              <span class="purchase-item__price"><%= item.priceLabel %></span>
+            </a>
+          <% } %>
+        </div>
+        <footer class="purchase-card__footer">
+          <div class="purchase-meta"><span>Ngày đặt: <%= order.created_at_label %></span><span><%= order.methodLabel %> · <%= order.paymentLabel %></span></div>
+          <p class="purchase-total">Thành tiền: <strong><%= order.totalLabel %></strong></p>
+          <div class="purchase-actions"><a class="btn" href="/orders/<%= order.order_id %>">Xem chi tiết</a><% if(order.canPayBank){ %><a class="btn btn--primary" href="/orders/<%= order.order_id %>/payment">Thanh toán</a><% } %></div>
+        </footer>
+      </article>
+    <% } %>
+    <nav class="catalog-pagination" aria-label="Phân trang đơn hàng">
+      <% if (history.page > 1) { %><a class="btn" href="/orders?page=<%= history.page - 1 %>&amp;status=<%= history.status %>">Trang trước</a><% } %>
+      <span>Trang <%= history.page %>/<%= history.totalPages %></span>
+      <% if (history.page < history.totalPages) { %><a class="btn" href="/orders?page=<%= history.page + 1 %>&amp;status=<%= history.status %>">Trang sau</a><% } %>
+    </nav>
+  <% } %>
+</section>
+<%- include('../account/partials/end') %>

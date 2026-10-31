@@ -1,0 +1,20 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1><%= coupon ? 'Sửa mã giảm giá' : 'Tạo mã giảm giá' %></h1>
+  <% if(notice){ %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <% if(Object.keys(errors).length){ %><p class="admin-error" role="alert">Chưa lưu. Vui lòng kiểm tra biểu mẫu.</p><% } %>
+  <form class="admin-form" method="post" action="/admin/coupons<%= coupon ? '/'+coupon.coupon_id+'/update' : '' %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="admin-field"><label for="code">Mã giảm giá</label><input id="code" name="code" value="<%= values.code || '' %>" minlength="3" maxlength="50" pattern="[A-Za-z0-9_-]{3,50}" required <%= coupon?'readonly':'' %> /><p>Không phân biệt hoa/thường. Không đổi tên mã đã tạo.</p><% if(errors.code){ %><p class="admin-error"><%= errors.code %></p><% } %></div>
+    <div class="admin-field"><label for="discount_type">Loại giảm giá</label><select id="discount_type" name="discount_type"><option value="percent" <%= values.discount_type==='percent'?'selected':'' %>>Phần trăm</option><option value="fixed" <%= values.discount_type==='fixed'?'selected':'' %>>Số tiền cố định (đ)</option></select><% if(errors.discount_type){ %><p class="admin-error"><%= errors.discount_type %></p><% } %></div>
+    <% for(const [key,label,required] of [['discount_value','Giá trị giảm (% hoặc đ)',true],['min_order_amount','Tiền hàng tối thiểu trước giảm (đ)',true],['max_discount_amount','Giảm tối đa (đ; chỉ mã phần trăm)',false],['max_uses','Hạn mức lượt dùng (trống = không giới hạn)',false]]){ %>
+      <div class="admin-field"><label for="<%= key %>"><%= label %></label><input id="<%= key %>" name="<%= key %>" type="number" min="<%= key==='min_order_amount'?'0':key==='max_uses'?'1':'0.01' %>" step="<%= key==='max_uses'?'1':'0.01' %>" value="<%= values[key] ?? '' %>" <%= required?'required':'' %> /><% if(errors[key]){ %><p class="admin-error"><%= errors[key] %></p><% } %></div>
+    <% } %>
+    <% for(const [key,label] of [['starts_at','Bắt đầu'],['ends_at','Kết thúc (không bao gồm thời điểm này)']]){ %><div class="admin-field"><label for="<%= key %>"><%= label %></label><input id="<%= key %>" name="<%= key %>" type="datetime-local" step="1" value="<%= (values[key] || '').replace(' ','T') %>" required /><% if(errors[key]){ %><p class="admin-error"><%= errors[key] %></p><% } %></div><% } %>
+    <p>Ngày giờ theo múi giờ vận hành local của cửa hàng. Hạn mức chỉ tính đơn đã đặt, không tính việc nhập/áp dụng mã.</p>
+    <div class="admin-field"><label for="is_active">Trạng thái</label><select id="is_active" name="is_active"><option value="1" <%= String(values.is_active)==='1'?'selected':'' %>>Kích hoạt</option><option value="0" <%= String(values.is_active)==='0'?'selected':'' %>>Vô hiệu hóa</option></select></div>
+    <button class="btn btn--primary" type="submit">Lưu mã</button> <a href="/admin/coupons">Về danh sách</a>
+  </form>
+  <% if(coupon){ %><p>Lượt đang tính: <%= coupon.used_count %>. Còn lại: <%= coupon.max_uses==null?'Không giới hạn':Math.max(0,Number(coupon.max_uses)-Number(coupon.used_count)) %>.</p><a href="/admin/coupons/<%= coupon.coupon_id %>/orders">Xem đơn sử dụng mã</a><% } %>
+</section>
+<%- include('../partials/end') %>

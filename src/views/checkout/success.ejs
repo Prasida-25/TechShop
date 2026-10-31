@@ -1,0 +1,23 @@
+<%
+  const methods = { cod: 'Thanh toán khi nhận hàng (COD)', bank: 'Chuyển khoản' };
+  const payments = { unpaid: 'Chưa thanh toán', paid: 'Đã thanh toán', refund: 'Đã hoàn tiền' };
+  const statuses = { pending: 'Chờ xác nhận', confirmed: 'Đã xác nhận', shipping: 'Đang giao hàng',
+    delivered: 'Đã giao hàng', cancelled: 'Đã hủy' };
+  const label = (labels, value) => Object.hasOwn(labels, value) ? labels[value] : 'Chưa xác định';
+  const activeOrder = ['pending', 'confirmed', 'shipping', 'delivered'].includes(order.status);
+%>
+<%- include('../catalog/partials/head', { title: activeOrder ? title
+  : order.status === 'cancelled' ? 'Đơn hàng đã hủy — TechZone' : 'Thông tin đơn hàng — TechZone' }) %>
+<main class="container"><div class="grid app__content"><section class="catalog-empty">
+  <h1><%= order.status === 'cancelled' ? 'Đơn hàng đã hủy' : activeOrder ? 'Đặt hàng thành công' : 'Thông tin đơn hàng' %></h1>
+  <p>Mã đơn hàng: <strong>#<%= order.order_id %></strong></p>
+  <p>Tổng thanh toán: <strong><%= order.totalLabel %></strong></p>
+  <p>Trạng thái đơn hàng: <strong><%= label(statuses, order.status) %></strong></p>
+  <p>Phương thức thanh toán: <strong><%= label(methods, order.payment_method) %></strong></p>
+  <p>Trạng thái thanh toán: <strong><%= label(payments, order.payment_status) %></strong></p>
+  <% if (activeOrder && order.payment_method === 'cod' && order.payment_status === 'unpaid') { %>
+    <p>Vui lòng thanh toán khi nhận hàng; trang này không xác nhận đã thu tiền.</p>
+  <% } %>
+  <a class="btn btn--primary" href="/products">Tiếp tục xem sản phẩm</a>
+</section></div></main>
+<%- include('../catalog/partials/end') %>

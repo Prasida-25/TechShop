@@ -1,0 +1,106 @@
+<%- include('header') %>
+<% const fullAddress = a => [a.address_detail, a.ward, a.district, a.province].filter(Boolean).join(', ');
+   const currentAddress = checkout.addresses.find(a => checkout.address && Number(a.address_id) === checkout.address.address_id);
+   const quantity = checkout.items.reduce((sum, item) => sum + Number(item.quantity), 0); %>
+<main class="checkout-width checkout-content">
+  <section class="checkout-panel checkout-address" aria-labelledby="delivery-title"> 
+    <div class="_eMXWC"></div>
+    <h2 id="delivery-title"><span aria-hidden="true"></span>Địa Chỉ Nhận Hàng</h2>
+    <% if (checkout.address) { %>
+      <div class="checkout-address__current">
+        <strong><%= checkout.address.receiver_name %> <span>(+84) <%= checkout.address.phone %></span></strong>
+        <p><%= fullAddress(checkout.address) %></p>
+        <% if (Number(currentAddress?.is_default)) { %><span class="checkout-badge">Mặc định</span><% } %>
+      </div>
+      <details class="checkout-address__picker">
+        <summary>Thay Đổi</summary>
+        <form action="/checkout" method="get" class="checkout-address-form">
+          <% if (checkout.selection) { %><input type="hidden" name="items" value="<%= checkout.selection %>" /><% } %>
+          <fieldset><legend>Chọn địa chỉ nhận hàng đã lưu</legend>
+            <% for (const address of checkout.addresses) { %>
+              <label class="checkout-address-option"><input type="radio" name="address_id" value="<%= address.address_id %>" <%= checkout.address.address_id === Number(address.address_id) ? 'checked' : '' %> required />
+                <span><strong><%= address.receiver_name %> — <%= address.phone %></strong><span><%= fullAddress(address) %></span><% if(Number(address.is_default)){ %><span class="checkout-badge">Mặc định</span><% } %></span>
+              </label>
+            <% } %>
+          </fieldset>
+          <div class="checkout-actions"><button class="checkout-button" type="submit">Áp dụng địa chỉ</button><a href="/account/addresses">Quản lý địa chỉ</a></div>
+        </form>
+      </details>
+    <% } else { %>
+      <p>Bạn chưa có địa chỉ nhận hàng. Hãy bổ sung địa chỉ trước khi đặt hàng.</p>
+      <a class="checkout-button" href="/account/addresses">Thêm địa chỉ</a>
+    <% } %>
+  </section>
+
+  <section class="checkout-panel checkout-products" aria-label="Sản phẩm thanh toán">
+    <div class="checkout-columns checkout-products__head" aria-hidden="true"><h2>Sản phẩm</h2><span>Đơn giá</span><span>Số lượng</span><span>Thành tiền</span></div>
+    <% for (const item of checkout.items) { %>
+      <article class="checkout-columns checkout-product">
+        <div class="checkout-product__info">
+          <a href="/products/<%= item.product_id %>?variant=<%= item.variant_id %>" tabindex="-1" aria-hidden="true"><img src="/products/<%= item.product_id %>/variants/<%= item.variant_id %>/image" width="72" height="72" alt="" /></a>
+          <div><h3><a href="/products/<%= item.product_id %>?variant=<%= item.variant_id %>"><%= item.product_name %></a></h3><p>Phân loại: <%= item.variant_name %></p><small>Mã phiên bản: <%= item.sku %></small></div>
+        </div>
+        <p class="checkout-product__unit"><span class="checkout-mobile-label">Đơn giá</span><%= item.priceLabel %></p>
+        <p class="checkout-product__quantity"><span class="checkout-mobile-label">Số lượng</span><%= item.quantity %></p>
+        <p class="checkout-product__total"><span class="checkout-mobile-label">Thành tiền</span><%= item.lineLabel %></p>
+      </article>
+    <% } %>
+    <div class="checkout-products__subtotal"><span>Tổng tiền hàng (<%= quantity %> sản phẩm):</span><strong><%= checkout.subtotalLabel %></strong></div>
+  </section>
+
+  <section class="checkout-panel checkout-voucher" aria-labelledby="voucher-title">
+    <div class="checkout-section-heading"><h2 id="voucher-title">Voucher</h2><% if(checkout.couponCode){ %><span class="checkout-badge"><%= checkout.couponCode %> −<%= checkout.discountLabel %></span><% } %></div>
+    <details class="checkout-voucher__picker" <%= couponError ? 'open' : '' %>>
+      <summary><%= checkout.couponCode ? 'Thay đổi Voucher' : 'Chọn Voucher' %></summary>
+      <div class="checkout-voucher__body">
+        <form action="/checkout/coupon" method="post" class="checkout-coupon">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <% if (checkout.selection) { %><input type="hidden" name="items" value="<%= checkout.selection %>" /><% } %>
+          <% if (checkout.address) { %><input type="hidden" name="address_id" value="<%= checkout.address.address_id %>" /><% } %>
+          <label for="coupon-code">Mã giảm giá</label><div><input id="coupon-code" name="code" maxlength="50" value="<%= couponInput %>" required autocomplete="off" <%= couponError ? 'aria-invalid=true aria-describedby=coupon-error' : '' %> /><button class="checkout-button" type="submit">Áp dụng mã</button></div>
+        </form>
+        <% if (couponError) { %><p class="checkout-error" id="coupon-error" role="alert"><%= couponError %> Vui lòng sửa hoặc gỡ mã trước khi đặt hàng.</p><% } %>
+        <% if (hasCoupon) { %><form action="/checkout/coupon/remove" method="post" class="checkout-remove-coupon">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <% if (checkout.selection) { %><input type="hidden" name="items" value="<%= checkout.selection %>" /><% } %>
+          <% if (checkout.address) { %><input type="hidden" name="address_id" value="<%= checkout.address.address_id %>" /><% } %>
+          <button class="checkout-link" type="submit">Gỡ mã giảm giá</button>
+        </form><% } %>
+      </div>
+    </details>
+  </section>
+
+  <section class="checkout-panel checkout-payment" aria-labelledby="payment-title">
+    <div class="checkout-payment__method"><h2 id="payment-title">Phương thức thanh toán</h2>
+        <form action="/checkout/payment" method="post" class="checkout-payment-options" aria-labelledby="payment-title">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <% if(checkout.selection){ %><input type="hidden" name="items" value="<%= checkout.selection %>" /><% } %>
+          <% if(checkout.address){ %><input type="hidden" name="address_id" value="<%= checkout.address.address_id %>" /><% } %>
+          <button type="submit" name="payment_method" value="bank" class="checkout-payment-option" aria-pressed="<%= checkout.paymentMethod==='bank' %>">Chuyển khoản ngân hàng<span class="checkout-payment-option__check" aria-hidden="true">✓</span></button>
+          <button type="submit" name="payment_method" value="cod" class="checkout-payment-option" aria-pressed="<%= checkout.paymentMethod!=='bank' %>">Thanh toán khi nhận hàng<span class="checkout-payment-option__check" aria-hidden="true">✓</span></button>
+        </form>
+    </div>
+    <div class="checkout-totals"><dl>
+      <div><dt>Tổng tiền hàng</dt><dd><%= checkout.subtotalLabel %></dd></div>
+      <div><dt>Phí vận chuyển</dt><dd><%= checkout.shippingLabel %></dd></div>
+      <% if (checkout.couponCode) { %><div><dt>Voucher <%= checkout.couponCode %></dt><dd class="checkout-discount">−<%= checkout.discountLabel %></dd></div><% } %>
+      <div class="checkout-totals__final"><dt>Tổng thanh toán</dt><dd><p style="font-size: 3rem; font-weight: 600;"><%= checkout.totalLabel %></p></dd></div>
+    </dl></div>
+    <div class="checkout-place">
+      <p>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý với những <strong>Điều khoản của TechZone</strong></p>
+      <% if (checkout.token) { %>
+        <form action="/checkout" method="post" data-checkout-form>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input type="hidden" name="checkout_token" value="<%= checkout.token %>" />
+          <input type="hidden" name="address_id" value="<%= checkout.address.address_id %>" />
+          <input type="hidden" name="confirm" value="1" />
+          <input type="hidden" name="payment_method" value="<%= checkout.paymentMethod || 'cod' %>" />
+          <button class="checkout-button checkout-place__button" type="submit">Đặt hàng</button><p data-checkout-status role="status" aria-live="polite"></p>
+        </form>
+      <% } else { %><p class="checkout-error" role="status"><%= couponError ? 'Vui lòng kiểm tra Voucher để tiếp tục đặt hàng.' : 'Vui lòng thêm địa chỉ nhận hàng để tiếp tục đặt hàng.' %></p><% } %>
+    </div>
+  </section>
+</main>
+<script src="/js/checkout.js" defer></script>
+</body>
+</html>

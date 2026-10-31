@@ -1,0 +1,23 @@
+/* Header dùng chung; phần còn lại chỉ áp dụng cho các trang tài khoản. */
+.header-auth-form { margin: 0; }
+.header-auth-button { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.account-page .account_option a { text-decoration: none; color: var(--text-color); }
+.account-page .account_option a:hover { color: var(--hover-color); }
+.account-page .account-auth { margin: 0 auto; max-width: 760px; width: 100%; }
+.account-page .profile__label { flex-basis: 170px; }
+.account-page .profile__input { min-width: 0; }
+.account-page .account-addresses { display: block; }
+.account-page .account-error { color: #b42318; font-size: 1.3rem; margin: 6px 0 0; }
+.account-notice { padding: 12px; background: #f5f5f5; color: var(--text-color); font-size: 1.5rem; border-left: 3px solid var(--primary-color); }
+.account-note, .account-actions, .account-confirm { font-size: 1.4rem; color: var(--text-color); }
+.account-confirm { display: block; max-width: 240px; margin: 8px 0; }
+.account-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.account-default { display: inline-block; border: 1px solid var(--hover-color); padding: 3px 8px; color: var(--hover-color); font-size: 1.3rem; }
+.account-page .adress_number { gap: 16px; padding: 16px 0; }
+@media (max-width: 760px) {
+  .account-page .profile, .account-page .account-addresses { padding: 20px 15px; }
+  .account-page .profile__row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 18px; }
+  .account-page .profile__label { flex-basis: auto; text-align: left; padding: 0; }
+  .account-page .adress_number { flex-direction: column; }
+  .account-page .adress_number--item.last { align-items: flex-start; }
+}

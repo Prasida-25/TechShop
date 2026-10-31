@@ -1,0 +1,6 @@
+<div class="admin-field">
+  <% if (product && (typeof variant === 'undefined' ? Number(product.has_image) : variant && Number(variant.has_image))) { %><img class="admin-preview" src="/products/<%= product.product_id %><%= typeof variant !== 'undefined' && variant ? '/variants/'+variant.variant_id : '' %>/image" alt="Ảnh hiện tại" loading="lazy" /><% } %>
+  <label for="image"><%= typeof variant === 'undefined' ? 'Ảnh đại diện' : 'Ảnh biến thể' %> (PNG, JPEG/JFIF, WebP, GIF, AVIF, BMP; tối đa 1 MB)</label>
+  <input type="file" name="image" id="image" accept="image/png,image/jpeg,image/webp,image/gif,image/avif,image/bmp,.png,.jpg,.jpeg,.jfif,.webp,.gif,.avif,.bmp" />
+  <% if (errors.image) { %><p class="admin-error" role="alert"><%= errors.image %></p><% } %>
+</div>

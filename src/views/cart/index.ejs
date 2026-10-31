@@ -1,0 +1,50 @@
+<%- include('../catalog/partials/head', { cartPage: true }) %>
+<link rel="stylesheet" href="/css/cart-screen.css" />
+<main class="container cart-screen"><div class="grid app__content">
+  <div class="cart-feedback" role="status" aria-live="polite"><%= message || '' %></div>
+  <% if (!cart.items.length) { %>
+    <section class="cart-empty-state"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><h2>Giỏ hàng của bạn đang trống.</h2><p>Khám phá các phụ kiện phù hợp và thêm vào giỏ hàng.</p><a class="btn btn--primary" href="/products">Tiếp tục xem sản phẩm</a></section>
+  <% } else { %>
+    <div class="cart-table-head cart-columns"><input type="checkbox" data-select-all aria-label="Chọn tất cả ở tiêu đề" /><span>Sản phẩm</span><span>Đơn giá</span><span>Số lượng</span><span>Số tiền</span><span>Thao tác</span></div>
+    <section class="cart-products" aria-label="Sản phẩm trong giỏ">
+      <div class="cart-shop">
+        <h2>TechZone</h2>
+      </div>
+      <% for (const item of cart.items) { %>
+        <article class="cart-row cart-columns" data-cart-row data-id="<%= item.cart_item_id %>" data-price="<%= item.price || '' %>" data-quantity="<%= item.quantity %>" data-problem="<%= item.problem ? '1' : '0' %>">
+          <input class="cart-choice" type="checkbox" data-select-item aria-label="Chọn <%= item.product_name || 'sản phẩm không còn tồn tại' %> — <%= item.variant_name || '' %>" />
+          <div class="cart-product">
+            <% if (item.product_id) { %><a href="/products/<%= item.product_id %>?variant=<%= item.variant_id %>" class="cart-product__image"><img src="/products/<%= item.product_id %>/variants/<%= item.variant_id %>/image" alt="<%= item.product_name %>" width="88" height="88" /></a><% } else { %><img class="cart-product__image" src="/images/product-placeholder.svg" alt="Sản phẩm không còn tồn tại" width="88" height="88" /><% } %>
+            <div class="cart-product__text">
+              <h1><% if (item.product_id) { %><a href="/products/<%= item.product_id %>?variant=<%= item.variant_id %>"><%= item.product_name %></a><% } else { %>Sản phẩm không còn tồn tại<% } %></h1>
+              <p>Phân loại: <%= item.variant_name || 'Không còn tồn tại' %></p>
+              <% if (item.problem) { %><p class="cart-row-error" role="alert"><%= item.problem %></p><% } %>
+            </div>
+          </div>
+          <div class="cart-unit-price"><span class="cart-mobile-label">Đơn giá</span><%= item.priceLabel %></div>
+          <form class="cart-quantity-form" method="post" action="/cart/items/<%= item.cart_item_id %>/update" data-cart-update>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <label class="cart-visually-hidden" for="quantity-<%= item.cart_item_id %>">Số lượng <%= item.product_name || 'sản phẩm' %></label>
+            <div class="cart-stepper"><button type="button" data-step="-1" aria-label="Giảm số lượng <%= item.product_name || '' %>" <%= Number(item.quantity) <= 1 ? 'disabled' : '' %>>−</button><input id="quantity-<%= item.cart_item_id %>" name="quantity" type="number" min="1" max="<%= Math.max(1, Math.min(99, Number(item.stock) || 0)) %>" step="1" value="<%= item.quantity %>" inputmode="numeric" required /><button type="button" data-step="1" aria-label="Tăng số lượng <%= item.product_name || '' %>" <%= Number(item.quantity) >= Math.min(99, Number(item.stock) || 0) ? 'disabled' : '' %>>+</button></div>
+          </form>
+          <strong class="cart-line-total"><span class="cart-mobile-label">Thành tiền</span><%= item.lineLabel %></strong>
+          <form class="cart-delete-form" method="post" action="/cart/items/<%= item.cart_item_id %>/delete" data-cart-delete><input type="hidden" name="_csrf" value="<%= csrfToken %>" /><button type="submit" class="cart-text-button">Xóa</button></form>
+        </article>
+      <% } %>
+    </section>
+    <div class="cart-continue"><a href="/products">← Tiếp tục xem sản phẩm</a></div>
+    <div class="cart-checkout-bar"><div class="grid cart-checkout-inner">
+      <label class="cart-select-all"><input type="checkbox" data-select-all /> Chọn tất cả (<%= cart.items.length %>)</label>
+      <button class="cart-text-button" type="button" data-delete-selected disabled>Xóa đã chọn</button>
+      <div class="cart-selected-total"><span>Tổng cộng (<strong data-selected-count>0</strong> sản phẩm):</span><strong data-selected-total>0 ₫</strong></div>
+      <form action="/checkout" method="get" data-cart-checkout><input type="hidden" name="items" value="" /><button class="btn btn--primary cart-buy-button" type="submit" disabled>Mua hàng</button></form>
+    </div></div>
+    <noscript><p>Bật JavaScript để chọn sản phẩm, cập nhật nhanh và xóa nhiều dòng. Các nút Cập nhật/Xóa từng dòng vẫn sử dụng được. <a href="/checkout">Kiểm tra và đặt toàn bộ giỏ hàng</a>.</p></noscript>
+    <dialog class="cart-delete-dialog" aria-labelledby="cart-delete-title">
+      <h2 id="cart-delete-title">Xóa khỏi giỏ hàng?</h2><p data-cart-delete-question></p>
+      <form method="dialog"><button class="btn" value="cancel" autofocus>Hủy</button><button class="btn btn--primary" value="delete">Xóa</button></form>
+    </dialog>
+  <% } %>
+</div></main>
+<script src="/js/cart-screen.js" defer></script>
+<%- include('../catalog/partials/end') %>

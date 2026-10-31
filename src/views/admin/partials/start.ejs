@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/reset.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-page">
+  <a class="admin-skip" href="#admin-content">Đến nội dung</a>
+  <header class="admin-header">
+    <a class="admin-brand" href="/admin">TechZone</a>
+    <nav class="admin-nav" aria-label="Điều hướng quản trị">
+      <% if (currentUser && currentUser.role === 'admin') { %>
+        <a href="/admin/categories">Danh mục</a>
+        <a href="/admin/products">Sản phẩm</a>
+        <a href="/admin/orders">Đơn hàng</a>
+        <a href="/admin/coupons">Mã giảm giá</a>
+        <a href="/admin/advertisements">Quảng cáo</a>
+      <% } %>
+      <a href="/">Xem cửa hàng</a>
+      <% if (currentUser) { %>
+        <form action="/logout" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button class="btn btn--primary" type="submit">Đăng xuất</button>
+        </form>
+      <% } %>
+    </nav>
+  </header>
+  <main class="admin-content" id="admin-content" tabindex="-1">

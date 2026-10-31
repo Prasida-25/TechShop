@@ -1,0 +1,42 @@
+/* Chỉ trang danh sách Đơn mua. Giữ menu tài khoản chung, màu TechZone từ DESIGN.md. */
+.order-history { color: #1d1d1f; }
+.order-history-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.purchase-tabs { display: flex; background: #fff; border-bottom: 1px solid #e0e0e0; overflow-x: auto; margin-bottom: 16px; }
+.purchase-tabs a { flex: 1 0 auto; padding: 20px 13px; color: inherit; text-align: center; font-size: 1.3rem; border-bottom: 2px solid transparent; text-decoration: none; white-space: nowrap; }
+.purchase-tabs a[aria-current="page"] { color: #0066cc; border-bottom-color: #0066cc; }
+.purchase-card { background: #fff; margin-bottom: 18px; border-radius: 3px; overflow: hidden; }
+.purchase-card__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; border-bottom: 1px solid #f0f0f0; }
+.purchase-card__header > div { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.purchase-card__header strong { font-weight: 600; }
+.purchase-card__header a { font-size: 1.2rem; color: #7a7a7a; }
+.purchase-status { color: #0066cc; text-transform: uppercase; font-size: 1.2rem; text-align: right; }
+.purchase-items { padding: 0 24px; }
+.purchase-item { display: grid; grid-template-columns: 82px minmax(0,1fr) auto; align-items: center; gap: 16px; padding: 20px 0; text-decoration: none; color: inherit; }
+.purchase-item + .purchase-item { border-top: 1px solid #f0f0f0; }
+.purchase-item img { width: 82px; height: 82px; object-fit: contain; border: 1px solid #f0f0f0; background: #fff; }
+.purchase-item__info { min-width: 0; }
+.purchase-item__info h2 { font-size: 1.5rem; font-weight: 400; margin: 0 0 7px; line-height: 1.6; overflow-wrap: anywhere; }
+.purchase-item__info p { color: #7a7a7a; font-size: 1.3rem; margin: 0 0 5px; }
+.purchase-item__info > span { font-size: 1.3rem; }
+.purchase-item__price { font-size: 1.4rem; color: #0066cc; white-space: nowrap; }
+.purchase-card__footer { padding: 20px 24px 24px; background: #fafafc; border-top: 1px solid #f0f0f0; }
+.purchase-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; color: #7a7a7a; font-size: 1.2rem; }
+.purchase-total { display: flex; justify-content: flex-end; align-items: baseline; flex-wrap: wrap; gap: 12px; margin: 22px 0; font-size: 1.4rem; }
+.purchase-total strong { color: #0066cc; font-size: 2.3rem; font-weight: 500; }
+.purchase-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+.purchase-actions .btn { height: auto; min-height: 40px; padding: 10px 20px; border: 1px solid #e0e0e0; background: #fff; }
+.purchase-actions .btn--primary { background: #0066cc; border-color: #0066cc; color: #fff; }
+.purchase-empty { padding: 70px 20px; text-align: center; background: #fff; }
+.purchase-empty > i { font-size: 4rem; color: #ccc; }
+.purchase-empty h2 { font-size: 1.6rem; font-weight: 400; margin: 24px 0; }
+@media(max-width:760px) {
+  .purchase-tabs a { padding: 16px 12px; }
+  .purchase-card__header { padding: 16px; }
+  .purchase-items { padding: 0 16px; }
+  .purchase-item { grid-template-columns: 64px minmax(0,1fr); gap: 12px; }
+  .purchase-item img { width: 64px; height: 64px; }
+  .purchase-item__price { grid-column: 2; text-align: right; }
+  .purchase-card__footer { padding: 18px 16px; }
+  .purchase-total strong { font-size: 2rem; }
+  .purchase-actions .btn { flex: 1; }
+}

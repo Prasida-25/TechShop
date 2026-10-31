@@ -1,0 +1,44 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1><%= product ? 'Sửa sản phẩm' : 'Thêm sản phẩm và biến thể mặc định' %></h1>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <% if (Object.keys(errors).length) { %><p class="admin-error" role="alert">Chưa lưu. Vui lòng kiểm tra các trường bên dưới.</p><% } %>
+  <% if (errors.general) { %><p class="admin-error"><%= errors.general %></p><% } %>
+  <form action="<%= product ? '/admin/products/'+product.product_id+'/update' : '/admin/products' %>" method="post" enctype="multipart/form-data" class="admin-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <%- include('fields', {fields: [['product_name','Tên sản phẩm',200,'text']]}) %>
+    <div class="admin-field"><label for="brand">Thương hiệu</label><input id="brand" name="brand" value="<%= values.brand || '' %>" maxlength="100" />
+      <% if (errors.brand) { %><p class="admin-error"><%= errors.brand %></p><% } %></div>
+    <div class="admin-field"><label for="category_id">Danh mục</label><select id="category_id" name="category_id">
+      <option value="">Chưa phân loại</option>
+      <% for (const c of categories) { %><option value="<%= c.category_id %>" <%= String(values.category_id) === String(c.category_id) ? 'selected' : '' %>><%= c.category_name %></option><% } %>
+    </select><% if (errors.category_id) { %><p class="admin-error"><%= errors.category_id %></p><% } %></div>
+    <div class="admin-field"><label for="description">Mô tả</label><textarea id="description" name="description" rows="6" maxlength="16000"><%= values.description || '' %></textarea>
+      <% if (errors.description) { %><p class="admin-error"><%= errors.description %></p><% } %></div>
+    <%- include('image') %>
+    <div class="admin-field">
+      <label for="images">Ảnh bổ sung</label>
+      <input type="file" name="images" id="images" accept="image/png,image/jpeg,image/webp,image/gif,image/avif,image/bmp,.png,.jpg,.jpeg,.jfif,.webp,.gif,.avif,.bmp" multiple aria-describedby="images-help" />
+      <% if (errors.images) { %><p class="admin-error" role="alert"><%= errors.images %></p><% } %>
+    </div>
+    <% if (!product) { %>
+      <h2>Biến thể mặc định</h2>
+      <%- include('fields', {fields: [['variant_name','Tên biến thể',200,'text'],['sku','Mã phiên bản',50,'text'],['price','Giá bán (đ)',0,'number'],['stock','Tồn kho',0,'number']]}) %>
+    <% } %>
+    <div class="admin-actions"><button class="btn btn--primary" type="submit">Lưu sản phẩm</button><a style="background-color: #ccc; padding: 7px 10px; border-radius: 2px;" href="/admin/products">Về danh sách</a></div>
+  </form>
+  <% if (product) { %><%- include('image-management', { managedVariant: null }) %><% } %>
+  <% if (product) { %>
+    <div class="manage_variants--header">
+      <h2>Biến thể</h2>
+    <a style="background-color: #ccc; padding: 7px 10px; border-radius: 2px;" href="/admin/products/<%= product.product_id %>/variants/new">Thêm biến thể</a>
+    </div>
+    <% if (!product.variants.length) { %><p>Chưa có biến thể. Hãy thêm biến thể để có giá bán.</p><% } %>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Tên</th><th>Mã phiên bản</th><th>Giá</th><th>Tồn kho</th><th>Thao tác</th></tr></thead><tbody>
+    <% for (const v of product.variants) { %><tr><td><%= v.variant_name %></td><td><%= v.sku %></td><td><%= priceLabel(v.price) %></td><td><%= v.stock %><%= Number(v.stock) === 0 ? ' (Hết hàng)' : '' %></td>
+      <td><a href="/admin/products/<%= product.product_id %>/variants/<%= v.variant_id %>/edit">Sửa biến thể</a></td></tr><% } %>
+    </tbody></table></div>
+  <% } %>
+</section>
+<%- include('delete-dialog') %>
+<%- include('../partials/end') %>

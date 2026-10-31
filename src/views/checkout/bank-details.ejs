@@ -1,0 +1,8 @@
+<section class="bank-transfer" aria-label="Thông tin chuyển khoản">
+  <h2>Thông tin chuyển khoản Ngân hàng</h2>
+  <p>Ngân hàng: <strong><%= details.bank %></strong></p>
+  <p>Số tài khoản: <strong><%= details.account %></strong></p>
+  <p>Chủ tài khoản: <strong><%= details.owner %></strong></p>
+  <p>Số tiền: <strong><%= totalLabel %></strong></p>
+  <% if(reference){ %><p>Nội dung chuyển khoản: <strong><%= reference %></strong></p><% } else { %><p>Hãy tạo đơn trước để nhận nội dung chuyển khoản theo mã đơn.</p><% } %>
+</section>

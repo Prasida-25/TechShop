@@ -1,0 +1,62 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1>Đơn hàng #<%= order.order_id %></h1>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <p>Ngày đặt: <%= order.created_at_label %> · Cập nhật: <%= order.updated_at_label %></p>
+  <p>Khách hàng: <%= order.buyer_name || 'Tài khoản #'+order.user_id %></p>
+  <p>Trạng thái: <strong><%= order.statusLabel %></strong></p>
+  <p>Thanh toán: <%= order.methodLabel %> — <strong><%= order.paymentLabel %></strong></p>
+  <h2>Thông tin giao hàng</h2>
+  <p>Tên: <%= order.receiver_name %></p>
+  <p>Số điện thoại: <%= order.phone %></p>
+  <p>Địa chỉ: <%= [order.address_detail, order.ward, order.district, order.province].filter(Boolean).join(', ') %></p>
+  <h2>Sản phẩm đã đặt</h2>
+  <% if (!order.items.length) { %><p role="status">Chưa có dữ liệu chi tiết sản phẩm.</p><% } else { %>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Sản phẩm / Biến thể</th><th>Mã phiên bản</th><th>Số lượng</th><th>Đơn giá lúc mua</th><th>Thành tiền</th></tr></thead><tbody>
+    <% for (const item of order.items) { %><tr><td><%= item.product_name %><br /><%= item.variant_name || '—' %></td><td><%= item.sku || '—' %></td>
+      <td><%= item.quantity %></td><td><%= item.priceLabel %></td><td><%= item.lineLabel %></td></tr><% } %>
+  </tbody></table></div><% } %>
+  <% if (order.warning) { %><p class="admin-notice" role="status"><%= order.warning %></p><% } %>
+  <p>Tiền hàng: <strong><%= order.subtotalLabel %></strong></p>
+  <% if (order.discountLabel !== null) { %><p>Giảm giá<% if (order.coupon_code) { %> (<%= order.coupon_code %>)<% } %>: −<%= order.discountLabel %></p><% } %>
+  <p>Phí giao hàng : <strong><%= order.shippingLabel %></strong></p>
+  <p>Tổng thanh toán: <strong><%= order.totalLabel %></strong></p>
+  <% if(order.canConfirmBank){ %>
+    <h2>Xác nhận nhận chuyển khoản</h2>
+    <p>Đối soát sao kê: nội dung <strong>TZ<%= order.order_id %></strong>, số tiền <strong><%= order.totalLabel %></strong>. Chỉ xác nhận khi tiền đã thực sự vào tài khoản. Thao tác này không tự chuyển trạng thái giao hàng.</p>
+    <form action="/admin/orders/<%= order.order_id %>/confirm-bank" method="post" class="admin-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <label><input type="checkbox" name="confirm" value="1" required /> Tôi đã đối soát và nhận đủ tiền chuyển khoản.</label>
+      <button class="btn btn--primary" type="submit">Xác nhận nhận chuyển khoản</button>
+    </form>
+  <% } %>
+  <% if (order.canConfirmCod) { %>
+    <h2>Xác nhận đã thu COD</h2>
+    <p>Chỉ xác nhận khi đã nhận đủ <strong><%= order.totalLabel %></strong> của đơn đã giao này. Thao tác ghi nhận thanh toán, không thu tiền trực tuyến.</p>
+    <form action="/admin/orders/<%= order.order_id %>/confirm-cod" method="post" class="admin-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <label><input type="checkbox" name="confirm" value="1" required /> Tôi xác nhận đã nhận đủ tiền COD của đơn hàng.</label>
+      <div class="admin-actions"><button class="btn btn--primary" type="submit">Xác nhận đã thu COD</button></div>
+    </form>
+  <% } %>
+  <% if (order.nextStatus) { %>
+    <h2>Cập nhật trạng thái</h2>
+    <form action="/admin/orders/<%= order.order_id %>/status" method="post" class="admin-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><input type="hidden" name="expected_status" value="<%= order.status %>" /><input type="hidden" name="next_status" value="<%= order.nextStatus %>" />
+      <p>Bước tiếp theo: <strong><%= order.statuses[order.nextStatus] %></strong>. Thao tác này không xác nhận đã thu tiền COD.</p>
+      <label><input type="checkbox" name="confirm" value="1" required /> Tôi xác nhận chuyển đơn sang trạng thái trên.</label>
+      <div class="admin-actions"><button class="btn btn--primary" type="submit">Chuyển trạng thái</button></div>
+    </form>
+  <% } %>
+  <% if (order.canCancel) { %>
+    <% if (Number(order.expired)) { %><p class="admin-notice" role="status">Đơn đã quá 72 giờ chờ xác nhận; không thể xác nhận nữa. Bạn có thể hủy ngay hoặc để tác vụ tự hủy xử lý.</p><% } %>
+    <h2>Hủy đơn chờ xác nhận</h2><p>Khi hủy thành công, toàn bộ số lượng trong đơn sẽ được hoàn kho đúng một lần. Không thực hiện hoàn tiền.</p>
+    <form action="/admin/orders/<%= order.order_id %>/cancel" method="post" class="admin-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" /><input type="hidden" name="expected_status" value="pending" />
+      <label><input type="checkbox" name="confirm" value="1" required /> Tôi xác nhận hủy đơn và hoàn kho.</label>
+      <div class="admin-actions"><button class="btn btn--primary" type="submit">Hủy đơn</button></div>
+    </form>
+  <% } %>
+  <a href="/admin/orders">Về danh sách đơn hàng</a>
+</section>
+<%- include('../partials/end') %>

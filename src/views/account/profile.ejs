@@ -1,0 +1,12 @@
+<%- include('partials/start') %>
+<section class="profile">
+  <header class="account-panel-header"><h1 class="profile_heading">Hồ sơ của tôi</h1></header>
+  <% if (notice) { %><p class="account-notice" role="status"><%= notice %></p><% } %>
+  <form class="profile_form" method="post" action="/account/profile" data-account-form="profile">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <%- include('partials/field', {field: 'full_name', label: 'Họ tên'}) %>
+    <%- include('partials/field', {field: 'phone', label: 'Số điện thoại', maximum: 30}) %>
+    <div class="account-form-submit"><button class="profile__save" type="submit">Lưu</button></div>
+  </form>
+</section>
+<%- include('partials/end') %>

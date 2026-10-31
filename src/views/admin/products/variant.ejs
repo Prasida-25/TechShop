@@ -1,0 +1,27 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1><%= variant ? 'Sửa biến thể' : 'Thêm biến thể' %> — <%= product.product_name %></h1>
+  <% if (Object.keys(errors).length) { %><p class="admin-error" role="alert">Chưa lưu. Kiểm tra thông tin và chọn lại ảnh nếu có.</p><% } %>
+  <% if (errors.general) { %><p class="admin-error"><%= errors.general %></p><% } %>
+  <% if (errors.expected_stock) { %><p class="admin-error" role="alert"><%= errors.expected_stock %></p><a href="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/edit">Tải lại dữ liệu mới nhất</a><% } %>
+  <form action="/admin/products/<%= product.product_id %>/variants<%= variant ? '/'+variant.variant_id+'/update' : '' %>" method="post" enctype="multipart/form-data" class="admin-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <% if (variant) { %><input type="hidden" name="expected_stock" value="<%= values.expected_stock ?? '' %>" /><% } %>
+    <%- include('fields', {fields: [['variant_name','Tên biến thể',200,'text'],['sku','Mã phiên bản',50,'text'],['price','Giá bán (đ)',0,'number'],['stock','Tồn kho',0,'number']]}) %>
+    <% const names = new Map(product.options.map(o => [o.option_id, o.option_name])); %>
+    <% for (const [key, name] of names) { %><div class="admin-field">
+      <label for="option_<%= key %>"><%= name %></label><select id="option_<%= key %>" name="option_<%= key %>" required>
+        <option value="">Chọn <%= name %></option>
+        <% for (const row of product.options.filter(o => o.option_id === key && o.option_value_id !== null)) { %>
+          <option value="<%= row.option_value_id %>" <%= String(values['option_'+key]) === String(row.option_value_id) ? 'selected' : '' %>><%= row.value_name %></option>
+        <% } %>
+      </select></div><% } %>
+    <% if (errors.options) { %><p class="admin-error" role="alert"><%= errors.options %></p><% } %>
+    <%- include('image') %>
+    <p>Cập nhật tồn kho là số lượng còn lại. Nếu kho thay đổi từ khi mở form, hệ thống yêu cầu tải lại trước khi lưu.</p>
+    <% if (variant) { %><label class="admin-stock-confirm"><input type="checkbox" name="confirm_stock" value="1" <%= values.confirm_stock === '1' ? 'checked' : '' %> /> Tôi xác nhận thay đổi số lượng tồn kho (cần chọn khi sửa số lượng).</label><% } %>
+    <div class="admin-actions"><button class="btn btn--primary" type="submit">Lưu biến thể</button><a href="/admin/products/<%= product.product_id %>/edit">Về sản phẩm</a></div>
+  </form>
+  <% if (variant) { %><%- include('image-management', { managedVariant: variant }) %><% } %>
+</section>
+<%- include('../partials/end') %>

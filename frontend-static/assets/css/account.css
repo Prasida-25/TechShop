@@ -1,0 +1,519 @@
+.container {
+  margin-top: 110px;
+  padding: 30px 0;
+  background-color: #f5f5f5;
+}
+
+/* Profile */
+
+.profile {
+  box-shadow: 0 2px 8px #999;
+  padding: 20px 35px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.profile_main {
+  padding: 10px 0;
+}
+
+.infor {
+  display: flex;
+  border-bottom: solid #ccc 1px;
+  padding: 20px 0;
+}
+
+.infor_avatar {
+  display: block;
+  width: 60;
+  height: 60;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.infor_avatar--img {
+  width: 60px;
+  height: 60px;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.infor_name {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.infor_name--name {
+  font-size: 1.6rem;
+  color: var(--text-color);
+  font-weight: 500;
+  user-select: none;
+}
+
+.infor_name--link {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.infor_name--link:hover {
+  color: var(--hover-color);
+}
+
+.account_option {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 0;
+}
+
+.account_option--name {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.profile_heading {
+  color: var(--text-color);
+  border-bottom: solid #ccc 1px;
+  padding: 0 0 20px 0;
+}
+
+.profile_form {
+  max-width: 900px;
+}
+
+/* Mỗi hàng: cột nhãn bên trái + cột nội dung bên phải */
+.profile__row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile__row--top {
+  align-items: flex-start;
+}
+
+.profile__label {
+  flex: 0 0 170px;
+  font-size: 1.5rem;
+  padding-right: 28px;
+  text-align: right;
+  color: #555;
+}
+
+.profile__row--top .profile__label {
+  padding-top: 8px; /* canh nhãn ngang với chữ trong ô input */
+}
+
+.profile__field {
+  flex: 1;
+}
+
+/* Ô nhập */
+.profile__input {
+  width: 100%;
+  max-width: 645px;
+  height: 40px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: var(--text-color);
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  outline: none;
+}
+
+.profile__input:focus {
+  border-color: #ee4d2d;
+}
+
+.profile__hint {
+  color: #999;
+  font-size: 1.2rem;
+}
+
+.profile__row--top:first-child .profile__field {
+  margin-bottom: 0;
+}
+
+/* Giá trị + link */
+.profile__value {
+  margin-right: 8px;
+  font-size: 1.5rem;
+}
+
+.profile__link {
+  color: #05a;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.radio__text {
+  color: var(--text-color);
+  font-size: 1.5rem;
+}
+
+.profile__link:hover {
+  color: #ee4d2d;
+}
+
+/* Icon dấu hỏi nhỏ cạnh nhãn */
+.profile__help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  font-size: 11px;
+  color: #888;
+  border: 1.5px solid #888;
+  border-radius: 50%;
+  cursor: help;
+  vertical-align: 1px;
+}
+
+/* Radio tùy chỉnh */
+.profile__field--radios {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.radio input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio__mark {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #c4c4c4;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.radio__mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: #ee4d2d;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.radio input:checked + .radio__mark {
+  border-color: #ee4d2d;
+}
+
+.radio input:checked + .radio__mark::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.radio input:focus-visible + .radio__mark {
+  outline: 2px solid #05a;
+  outline-offset: 2px;
+}
+
+/* Nút Lưu */
+.profile__save {
+  width: 205px;
+  height: 60px;
+  padding: 0 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ee4d2d;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.profile__save:hover {
+  background-color: #d73f21;
+}
+
+.profile_btn {
+  justify-content: center;
+}
+
+/* Address */
+
+.adress {
+  box-shadow: 0 2px 8px #999;
+  padding: 20px 35px;
+  border-radius: 3px;
+  background-color: #fff;
+  display: none;
+}
+
+.adress_header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid #ccc 1px;
+}
+
+.adress_heading {
+  color: var(--text-color);
+  padding: 0 0 20px 0;
+}
+
+.adress_btn {
+  display: flex;
+  align-items: center;
+}
+
+.adress_save {
+  width: 205px;
+  height: 40px;
+  padding: 0 24px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ee4d2d;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.adress_main {
+  padding: 10px 0;
+}
+
+.adress_number {
+  border-bottom: solid #ccc 1px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.adress_list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+}
+
+.adress_list.block {
+  display: block;
+}
+
+.adress_list--item {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  padding-right: 10px;
+}
+
+.adress_list--item.border {
+  border-right: solid #ccc 1px;
+}
+
+.adress_list--item.border:last-child {
+  border: none;
+  margin-left: 10px;
+  color: #999;
+}
+
+.adress_list--item.default {
+  border: solid var(--hover-color) 1px;
+  color: var(--hover-color);
+  width: 20%;
+  text-align: center;
+  padding-right: 0;
+  margin-top: 10px;
+}
+
+.adress_update {
+  font-size: 1.4rem;
+  color: #05a;
+  text-decoration: none;
+}
+
+.adress_default {
+  width: 150px;
+  height: 30px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--text-color);
+  background-color: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.adress_number--item.last {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: flex-end;
+}
+/* Personal */
+
+.personal {
+  box-shadow: 0 2px 8px #999;
+  padding: 20px 35px;
+  border-radius: 3px;
+  background-color: #fff;
+  display: none;
+}
+
+.personal_heading {
+  color: var(--text-color);
+  border-bottom: solid #ccc 1px;
+  padding: 0 0 20px 0;
+}
+
+.personal_main {
+  padding: 10px 0;
+}
+
+.personal_list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding-left: 0;
+}
+
+.personal_item {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.personal_btn {
+  display: flex;
+  align-items: center;
+}
+
+.personal_save {
+  width: 205px;
+  height: 40px;
+  padding: 0 24px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ee4d2d;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Private */
+
+.private {
+  box-shadow: 0 2px 8px #999;
+  padding: 20px 35px;
+  border-radius: 3px;
+  background-color: #fff;
+  display: none;
+}
+
+.private_header {
+  border-bottom: solid #ccc 1px;
+}
+
+.private_heading {
+  color: var(--text-color);
+}
+
+.private_notify {
+  color: var(--text-color);
+  padding: 0 0 10px 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.verify {
+  max-width: 800px;
+  margin: 20px 0;
+}
+
+/* Mỗi hàng: nhãn bên trái + ô nhập bên phải */
+.verify__row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 42px;
+}
+
+.verify__row--top {
+  align-items: flex-start;
+  margin-bottom: 36px;
+}
+
+.verify__label {
+  flex: 0 0 154px;
+  padding-right: 30px;
+  text-align: right;
+  color: #222;
+  font-size: 1.6rem;
+}
+
+.verify__row--top .verify__label {
+  padding-top: 16px; /* canh nhãn ngang với dòng đầu của textarea */
+}
+
+.verify__field {
+  flex: 1;
+  max-width: 600px;
+}
+
+/* Ô nhập dùng chung cho input và textarea */
+.verify__input {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: var(--text-color);
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  outline: none;
+}
+
+.verify__input::placeholder {
+  color: #bdbdbd;
+}
+
+.verify__input:focus {
+  border-color: #ee4d2d;
+}
+
+/* Nút Xác Nhận */
+.private_btn {
+  display: flex;
+  justify-content: center;
+}
+
+.private_save {
+  width: 205px;
+  height: 40px;
+  padding: 0 24px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ee4d2d;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Trạng thái chưa nhập đủ: màu nhạt giống ảnh */
+.verify__submit:disabled {
+  background-color: #f9c9be;
+  cursor: not-allowed;
+}

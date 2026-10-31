@@ -1,0 +1,13 @@
+<%- include('partials/auth-start', {authMode: 'register'}) %>
+  <h1 id="auth-title" hidden>Đăng ký</h1>
+  <form class="profile_form" method="post" action="/register" data-account-form="register">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <%- include('partials/field', {field: 'full_name', label: 'Họ tên'}) %>
+    <%- include('partials/field', {field: 'phone', label: 'Số điện thoại', maximum: 30}) %>
+    <%- include('partials/field', {field: 'password', label: 'Mật khẩu', inputType: 'password', maximum: 128}) %>
+    <p class="profile__hint">Mật khẩu từ 8–128 ký tự, có chữ cái và chữ số.</p>
+    <%- include('partials/field', {field: 'confirm_password', label: 'Xác nhận mật khẩu', inputType: 'password', maximum: 128}) %>
+    <button class="profile__save" type="submit">Đăng ký</button>
+  </form>
+  <p class="auth-switch">Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+<%- include('partials/auth-end') %>

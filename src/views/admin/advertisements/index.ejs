@@ -1,0 +1,34 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1>Quản lý quảng cáo</h1>
+  <p>Trang chủ hiển thị một banner lớn và tối đa bốn ô nhỏ đang bật, ưu tiên thứ tự nhỏ trước; cùng thứ tự thì ID nhỏ trước. Chưa có quảng cáo đang bật thì vị trí đó để trống.</p>
+  <% if (notice) { %><p class="admin-notice" role="status"><%= notice %></p><% } %>
+  <p><a class="btn btn--primary" href="/admin/advertisements/new">Thêm quảng cáo</a></p>
+  <% if (!advertisements.length) { %><p>Chưa có quảng cáo. Hãy thêm ảnh để hiển thị trên trang chủ.</p><% } else { %>
+  <div class="admin-table-wrap"><table class="admin-table">
+    <thead><tr><th>Ảnh</th><th>Tiêu đề</th><th>Vị trí</th><th>Thứ tự</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <tbody><% for (const advertisement of advertisements) { %>
+      <tr>
+        <td><img src="/admin/advertisements/<%= advertisement.advertisement_id %>/image" alt="<%= advertisement.title %>" width="120" height="70" style="object-fit:contain" loading="lazy" /></td>
+        <td><%= advertisement.title %></td>
+        <td><%= advertisement.position === 'hero' ? 'Banner lớn' : 'Ô quảng cáo nhỏ' %></td>
+        <td><%= advertisement.sort_order %></td><td><%= advertisement.is_active ? 'Đang bật' : 'Đã tắt' %></td>
+        <td><div class="admin-actions">
+          <a href="/admin/advertisements/<%= advertisement.advertisement_id %>/edit">Sửa</a>
+          <form method="post" action="/admin/advertisements/<%= advertisement.advertisement_id %>/status">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <input type="hidden" name="is_active" value="<%= advertisement.is_active ? '0' : '1' %>" />
+            <button type="submit" class="btn"><%= advertisement.is_active ? 'Tắt' : 'Bật' %></button>
+          </form>
+          <form method="post" action="/admin/advertisements/<%= advertisement.advertisement_id %>/delete" data-advertisement-delete data-title="<%= advertisement.title %>">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <button type="submit" class="btn">Xóa</button>
+          </form>
+        </div></td>
+      </tr>
+    <% } %></tbody>
+  </table></div>
+  <% } %>
+</section>
+<script src="/js/admin-advertisements.js" defer></script>
+<%- include('../partials/end') %>

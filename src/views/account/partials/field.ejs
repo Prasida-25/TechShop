@@ -1,0 +1,15 @@
+<% const type = typeof inputType === 'undefined' ? 'text' : inputType;
+   const requiredField = typeof optional === 'undefined' || !optional;
+   const maxLength = typeof maximum === 'undefined' ? 100 : maximum; %>
+<div class="profile__row profile__row--top">
+  <label class="profile__label" for="<%= field %>"><%= label %><%= requiredField ? '' : ' (tùy chọn)' %></label>
+  <div class="profile__field">
+    <input class="profile__input" id="<%= field %>" name="<%= field %>" type="<%= type %>"
+      value="<%= type === 'password' ? '' : values[field] || '' %>" maxlength="<%= maxLength %>"
+      <%- requiredField ? 'required' : '' %>
+      <% if (type === 'password') { %>autocomplete="<%= field === 'current_password' || field === 'password' && typeof loginForm !== 'undefined' && loginForm ? 'current-password' : 'new-password' %>"<% } %>
+      <% if (field === 'phone') { %>inputmode="tel" autocomplete="tel"<% } %>
+      aria-describedby="<%= field %>-error" aria-invalid="<%= errors[field] ? 'true' : 'false' %>" />
+    <p class="account-error" id="<%= field %>-error"><%= errors[field] || '' %></p>
+  </div>
+</div>

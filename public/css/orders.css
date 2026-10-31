@@ -1,0 +1,11 @@
+.orders-page { color: var(--text-color); font-size: 1.5rem; padding-bottom: 24px; overflow-wrap: anywhere; }
+.orders-page h1 { font-size: 2.4rem; line-height: 1.4; }
+.orders-page h2 { font-size: 1.9rem; }
+.orders-page h3 { font-size: 1.7rem; }
+.orders-card { background: var(--white-color); padding: 20px; margin-bottom: 16px; border-radius: 8px; }
+.orders-card a { color: inherit; }
+.orders-card .btn { text-decoration: none; }
+.orders-page .catalog-pagination { align-items: center; }
+.orders-page .review-comment { white-space: pre-wrap; }
+.orders-page textarea { display: block; width: 100%; max-width: 100%; box-sizing: border-box; font: inherit; }
+@media (max-width: 760px) { .orders-card { padding: 15px; } }

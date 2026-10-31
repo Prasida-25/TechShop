@@ -1,0 +1,21 @@
+<%- include('../../catalog/partials/head', {accountPage: true, filters: {}}) %>
+<% const rawPath = typeof accountPath === 'string' ? accountPath : '';
+   const activePath = rawPath === '/account/profile' ? '/account' : rawPath.startsWith('/account/addresses') ? '/account/addresses' : rawPath; %>
+<div class="container account-page"><div class="grid"><div class="grid__row app__content <%= currentUser ? 'account-layout' : '' %>">
+<% if (currentUser) { %>
+  <aside class="grid__column-2 account-sidebar">
+    <div class="account-identity"><span class="account-initial" aria-hidden="true"><%= (currentUser.full_name || 'T').slice(0,1).toUpperCase() %></span><div><strong><%= currentUser.full_name %></strong><% if(currentUser.role !== 'admin'){ %><a href="/account">Sửa hồ sơ</a><% } %></div></div>
+    <nav class="account_option" aria-label="Tài khoản">
+      <% if (currentUser.role === 'admin') { %>
+      <a class="account_option--name" href="/admin">Quản trị</a>
+      <% } else { %>
+      <p class="account-nav-heading"><i class="fa-regular fa-user" aria-hidden="true"></i> Tài khoản của tôi</p>
+      <% for(const [url, label] of [['/account','Hồ sơ'],['/account/addresses','Địa chỉ'],['/account/change-password','Đổi mật khẩu']]){ %>
+        <a class="account_option--name account-nav-child" href="<%= url %>" <%- activePath === url ? 'aria-current="page"' : '' %>><%= label %></a>
+      <% } %>
+      <a class="account_option--name account-nav-orders" href="/orders" <%- activePath.startsWith('/orders') ? 'aria-current="page"' : '' %>><i class="fa-regular fa-clipboard" aria-hidden="true"></i> Đơn mua</a>
+      <% } %>
+    </nav>
+  </aside>
+<% } %>
+<div class="grid__column-10 <%= currentUser ? 'account-main' : 'account-auth' %>">

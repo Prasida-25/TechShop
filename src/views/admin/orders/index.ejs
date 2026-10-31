@@ -1,0 +1,25 @@
+<%- include('../partials/start') %>
+<section class="admin-panel">
+  <h1>Đơn hàng</h1>
+  <form class="admin-search" action="/admin/orders" method="get">
+    <label for="q">Mã đơn, khách hàng, người nhận hoặc số điện thoại</label>
+    <input id="q" name="q" maxlength="100" value="<%= filters.q %>" />
+    <button class="btn btn--primary" type="submit">Tìm kiếm</button>
+  </form>
+  <% if (!orders.length) { %><p role="status">Không có đơn hàng phù hợp.</p><% } else { %>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Mã đơn</th><th>Ngày đặt</th><th>Khách hàng</th><th>Số lượng</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thanh toán</th><th>Cập nhật</th></tr></thead><tbody>
+    <% for (const order of orders) { %><tr>
+      <td><span>#<%= order.order_id %></span></td><td><%= order.created_at_label %></td>
+      <td><%= order.buyer_name || 'Tài khoản #'+order.user_id %></td>
+      <td><%= order.quantity %></td><td><%= order.totalLabel %></td><td><%= order.statusLabel %></td>
+      <td><%= order.methodLabel %><br /><%= order.paymentLabel %></td>
+      <td><a style="color: #0055aa;" href="/admin/orders/<%= order.order_id %>">Xem</a></td>
+    </tr><% } %>
+  </tbody></table></div>
+  <nav class="admin-actions" aria-label="Phân trang đơn hàng">
+    <% if (page > 1) { %><a href="/admin/orders?<%= new URLSearchParams({q:filters.q,status:filters.status,page:String(page-1)}) %>">Trang trước</a><% } %>
+    <span>Trang <%= page %> / <%= totalPages %></span>
+    <% if (page < totalPages) { %><a href="/admin/orders?<%= new URLSearchParams({q:filters.q,status:filters.status,page:String(page+1)}) %>">Trang sau</a><% } %>
+  </nav><% } %>
+</section>
+<%- include('../partials/end') %>

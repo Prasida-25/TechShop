@@ -1,0 +1,8 @@
+<% if (Number(product.has_orders) === 0) { %>
+  <form method="post" action="/admin/products/<%= product.product_id %>/delete" data-confirm-product-delete data-product-name="<%= product.product_name %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <button class="btn btn--primary" type="submit">Xóa sản phẩm</button>
+  </form>
+<% } else { %>
+  <button class="btn" type="button" disabled title="Sản phẩm đã có đơn hàng, kể cả đơn đã hủy">Không thể xóa</button>
+<% } %>

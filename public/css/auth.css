@@ -1,0 +1,55 @@
+/* Đăng ký/đăng nhập: token từ DESIGN.md, không ảnh hưởng khu vực tài khoản đã đăng nhập. */
+.auth-page {
+  --auth-primary: #0066cc;
+  --auth-focus: #0071e3;
+  --auth-ink: #1d1d1f;
+  --auth-muted: #7a7a7a;
+  --auth-line: #e0e0e0;
+  --auth-canvas: #f5f5f7;
+  margin: 0;
+  background: var(--auth-canvas);
+  color: var(--auth-ink);
+  font-size: 1.4rem;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.auth-header { background: #fff; border-bottom: 1px solid var(--auth-line); }
+.auth-header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 80px; gap: 24px; }
+.auth-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--auth-ink); font-size: 2.4rem; font-weight: 600; letter-spacing: -0.6px; }
+.auth-brand__symbol { display: block; width: 32px; height: 40px; overflow: hidden; flex: none; }
+.auth-brand img { display: block; width: 150px; height: 40px; max-width: none; }
+.auth-store-link { color: var(--auth-ink); font-size: 1.3rem; }
+.auth-store-link span { margin-left: 8px; color: var(--auth-primary); }
+.auth-shell { display: flex; align-items: center; justify-content: center; width: min(460px, calc(100% - var(--page-gutter) * 2)); padding-block: 32px; flex: 1; }
+.auth-card { width: 100%; min-width: 0; padding: 32px; background: #fff; border: 1px solid var(--auth-line); border-radius: 18px; }
+.auth-tabs { display: flex; gap: 4px; padding: 4px; background: var(--auth-canvas); border-radius: 999px; margin-bottom: 30px; }
+.auth-tabs a { flex: 1; text-align: center; padding: 9px 12px; border-radius: 999px; color: var(--auth-muted); font-size: 1.3rem; }
+.auth-tabs a[aria-current="page"] { background: #fff; color: var(--auth-primary); font-weight: 600; }
+.auth-card h1 { font-size: 2.8rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.7px; margin: 0 0 10px; }
+.auth-subtitle { margin: 0 0 28px; color: var(--auth-muted); font-size: 1.3rem; }
+.auth-page .profile__row { display: block; margin-bottom: 18px; }
+.auth-page .profile__label { display: block; margin-bottom: 7px; font-size: 1.3rem; color: #555; }
+.auth-page .profile__input { display: block; width: 100%; height: 46px; background: #fff; border: 1px solid var(--auth-line); border-radius: 8px; padding: 10px 14px; color: var(--auth-ink); font: inherit; font-size: 1.5rem; }
+.auth-page .profile__input:focus { outline: 2px solid var(--auth-focus); outline-offset: 2px; }
+.auth-page .profile__input[aria-invalid="true"] { border-color: #b42318; }
+.auth-page .account-error { color: #b42318; font-size: 1.2rem; margin: 7px 0 0; }
+.auth-page .account-error:empty { display: none; }
+.auth-page .account-error[role="alert"] { padding: 12px; border: 1px solid #edc6c2; border-radius: 8px; margin: 0 0 20px; }
+.auth-page .account-notice { padding: 12px 14px; background: #f5f5f7; border-left: 3px solid var(--auth-primary); font-size: 1.3rem; margin: 0 0 20px; }
+.auth-page .profile__hint { margin: -7px 0 18px; color: var(--auth-muted); font-size: 1.2rem; line-height: 1.5; }
+.auth-page .profile__save { display: block; width: 100%; min-height: 46px; margin-top: 24px; padding: 12px 22px; border: 0; border-radius: 999px; background: var(--auth-primary); color: #fff; font: inherit; font-size: 1.5rem; cursor: pointer; }
+.auth-switch { margin: 24px 0 0; text-align: center; color: var(--auth-muted); font-size: 1.3rem; }
+.auth-switch a { color: var(--auth-primary); }
+.auth-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--auth-line); padding-block: 20px; color: var(--auth-muted); font-size: 1.2rem; }
+.auth-footer a { color: var(--auth-primary); }
+.auth-page a:focus-visible, .auth-page button:focus-visible { outline: 2px solid var(--auth-focus); outline-offset: 3px; }
+@media(max-width:760px) {
+  .auth-header__inner { min-height: 70px; }
+  .auth-brand { font-size: 2.1rem; }
+  .auth-shell { padding-block: 24px; }
+  .auth-card { padding: 24px 20px; border-radius: 14px; }
+  .auth-card h1 { font-size: 2.4rem; }
+  .auth-footer { font-size: 1.1rem; }
+}
