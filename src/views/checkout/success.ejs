@@ -8,16 +8,30 @@
 %>
 <%- include('../catalog/partials/head', { title: activeOrder ? title
   : order.status === 'cancelled' ? 'Đơn hàng đã hủy — TechZone' : 'Thông tin đơn hàng — TechZone' }) %>
-<main class="container"><div class="grid app__content"><section class="catalog-empty">
-  <h1><%= order.status === 'cancelled' ? 'Đơn hàng đã hủy' : activeOrder ? 'Đặt hàng thành công' : 'Thông tin đơn hàng' %></h1>
+<link rel="stylesheet" href="/css/checkout-success.css" />
+<main class="order-success">
+<section class="order-success__card" aria-labelledby="success-title">
+  <div class="order-success__icon" aria-hidden="true"><%= activeOrder ? '✓' : order.status === 'cancelled' ? '×' : 'i' %></div>
+  <h1 id="success-title"><%= order.status === 'cancelled' ? 'Đơn hàng đã hủy' : activeOrder ? 'Đặt hàng thành công' : 'Thông tin đơn hàng' %></h1>
+  <p class="order-success__intro"><%= activeOrder ? 'Cảm ơn bạn đã mua sắm cùng TechZone.' : 'Bạn có thể xem thông tin chi tiết trong đơn mua.' %></p>
+  <div class="order-success__details">
+  <h2>Thông tin đơn hàng</h2>
   <p>Mã đơn hàng: <strong>#<%= order.order_id %></strong></p>
   <p>Tổng thanh toán: <strong><%= order.totalLabel %></strong></p>
   <p>Trạng thái đơn hàng: <strong><%= label(statuses, order.status) %></strong></p>
   <p>Phương thức thanh toán: <strong><%= label(methods, order.payment_method) %></strong></p>
   <p>Trạng thái thanh toán: <strong><%= label(payments, order.payment_status) %></strong></p>
+  </div>
   <% if (activeOrder && order.payment_method === 'cod' && order.payment_status === 'unpaid') { %>
-    <p>Vui lòng thanh toán khi nhận hàng; trang này không xác nhận đã thu tiền.</p>
+    <p class="order-success__note">Vui lòng thanh toán khi nhận hàng.</p>
   <% } %>
-  <a class="btn btn--primary" href="/products">Tiếp tục xem sản phẩm</a>
-</section></div></main>
+  <% if (activeOrder && order.payment_method === 'bank' && order.payment_status === 'unpaid') { %>
+    <p class="order-success__note">Vào đơn mua và chọn “Thanh toán” để xem hướng dẫn chuyển khoản.</p>
+  <% } %>
+  <div class="order-success__actions">
+    <a class="order-success__button order-success__button--primary" href="/orders/<%= order.order_id %>">Xem chi tiết đơn hàng</a>
+    <a class="order-success__button" href="/products">Tiếp tục xem sản phẩm</a>
+  </div>
+  <a class="order-success__history" href="/orders">Đơn mua của tôi →</a>
+</section></main>
 <%- include('../catalog/partials/end') %>

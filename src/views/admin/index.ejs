@@ -1,9 +1,17 @@
 <%- include('partials/start') %>
-<section class="admin-panel">
+<section class="admin-panel admin-overview">
   <h1>Khu vực quản trị TechZone</h1>
-  <p>Xin chào, <strong><%= currentUser.full_name %></strong>.</p>
-  <p class="admin-notice" role="status">
-    Bạn đã đăng nhập với quyền quản trị viên.
-  </p>
+  <p class="admin-notice" role="status">Xin chào, <strong><%= currentUser.full_name %></strong>.</p>
+  <div class="admin-shortcuts">
+    <% for (const [url, name, description] of [
+      ['/admin/products','Sản phẩm','Thêm, chỉnh sửa sản phẩm, hình ảnh và phiên bản.'],
+      ['/admin/categories','Danh mục','Sắp xếp và quản lý các nhóm sản phẩm.'],
+      ['/admin/orders','Đơn hàng','Theo dõi đơn mua, giao hàng và xác nhận thanh toán.'],
+      ['/admin/coupons','Mã giảm giá','Thiết lập ưu đãi và theo dõi lượt sử dụng.'],
+      ['/admin/advertisements','Quảng cáo','Quản lý banner và các vị trí quảng cáo trên trang chủ.']
+    ]) { %>
+      <a class="admin-shortcut" href="<%= url %>"><span class="admin-shortcut__arrow" aria-hidden="true">↗</span><h2><%= name %></h2><p><%= description %></p><span class="admin-shortcut__link">Mở quản lý →</span></a>
+    <% } %>
+  </div>
 </section>
 <%- include('partials/end') %>
